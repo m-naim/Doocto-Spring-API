@@ -2,13 +2,14 @@ package com.example.accessingdatajpa;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-@RepositoryRestResource(collectionResourceRel = "Customers", path = "Customers")
-public interface CustomerRepository extends PagingAndSortingRepository<Customer, Long> {
+@RepositoryRestResource(collectionResourceRel = "people", path = "people")
+public interface PersonRepository extends JpaRepository<Person, Long> {
 
-  List<Customer> findByLastName(@Param("name") String name);
+  List<Person> findByLastName(@Param("name") String name);
 
 }
