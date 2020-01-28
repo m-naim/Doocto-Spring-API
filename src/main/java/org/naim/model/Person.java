@@ -1,4 +1,4 @@
-package com.example.accessingdatajpa;
+package org.naim.model;
 
 
 import javax.persistence.Column;

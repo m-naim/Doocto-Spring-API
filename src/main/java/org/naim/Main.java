@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.accessingdatajpa;
+package org.naim;
 
 
 import org.springframework.boot.SpringApplication;
