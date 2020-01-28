@@ -1,10 +1,10 @@
 package org.naim.repository;
 
-import org.naim.model.Person;
+import org.naim.model.Docteur;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-@RepositoryRestResource(collectionResourceRel = "people", path = "people")
-public interface DocteurRepository extends JpaRepository<Person, Long>  {
+@RepositoryRestResource(collectionResourceRel = "docteurs", path = "docteurs")
+public interface DocteurRepository extends JpaRepository<Docteur, Long>  {
 
 }
