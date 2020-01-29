@@ -23,6 +23,10 @@ public class Commune implements Serializable {
 	@ManyToOne(cascade = {CascadeType.PERSIST})
 	private Departement departement;
 	
+	
+	
+	public Commune() {}
+	
 	public Commune(String name, String codeInsee) {
 		this.name = name;
 		this.codeInsee = codeInsee;

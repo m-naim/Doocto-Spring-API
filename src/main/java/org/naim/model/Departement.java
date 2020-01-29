@@ -21,6 +21,8 @@ public class Departement implements Serializable {
 	private String name;
 	@OneToMany(mappedBy = "departement")
 	private List<Commune> communes = new ArrayList<Commune>();
+	
+	public Departement() {}
 		
 	public Departement(String id, String name) {
 		this.id = id;
