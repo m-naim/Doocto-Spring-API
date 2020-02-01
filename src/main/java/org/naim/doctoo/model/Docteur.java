@@ -1,8 +1,9 @@
-package org.naim.model;
+package org.naim.doctoo.model;
 
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,10 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import org.hibernate.validator.constraints.Currency;
+
 @Entity
 public class Docteur implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private int id;
+	private Long id;
 	
 	private String civilite;
 	
@@ -27,10 +30,12 @@ public class Docteur implements Serializable {
 	private Coordonnees coordonnees;
 	
 	private String addresse;
+	@Column(name = "codePostal")
 	private String codePostal;
 	
 	@ManyToOne(cascade = {CascadeType.PERSIST})
 	private Profession profession;
+	@Column(name = "nomProfessionel")
 	private String nomProfessionel;
 	
 	

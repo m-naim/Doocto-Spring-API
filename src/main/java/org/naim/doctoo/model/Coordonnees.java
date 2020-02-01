@@ -1,4 +1,4 @@
-package org.naim.model;
+package org.naim.doctoo.model;
 
 import java.io.Serializable;
 

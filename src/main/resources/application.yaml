@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${RDS_HOSTNAME:localhost}:${RDS_PORT:3306}/${RDS_DB_NAME:spring}?serverTimezone=UTC&useSSL=false
+    username: ${RDS_USERNAME:spring}
+    password: ${RDS_PASSWORD:user}
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+    driverClassName: com.mysql.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        ddl-auto: update
+        naming:
+          implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      format-sql: true	
+    show-sql: true
+
+  profiles:
+    active: production
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: github-client-id
+            clientSecret: github-client-secret
+          google:
+            clientId: 5014057553-8gm9um6vnli3cle5rgigcdjpdrid14m9.apps.googleusercontent.com
+            clientSecret: tWZKVLxaD_ARWsriiiUFYoIk
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+
+logging:
+ level:
+  org.springframework: INFO
+
+server:
+ port: ${PORT:5000}
+ 

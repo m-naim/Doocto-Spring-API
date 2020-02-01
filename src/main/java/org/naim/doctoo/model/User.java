@@ -1,4 +1,4 @@
-package org.naim.model;
+package org.naim.doctoo.model;
 
 
 import javax.persistence.Column;
@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Person {
+public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,7 +21,7 @@ public class Person {
   private String lastName;
 
   
-  public Person() {}
+  public User() {}
 
 public String getFirstName() {
     return firstName;
