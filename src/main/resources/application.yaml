@@ -6,15 +6,18 @@ spring:
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
+    
   jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+          implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
-        ddl-auto: update
-        naming:
-          implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       format-sql: true	
     show-sql: true
 
@@ -25,16 +28,20 @@ spring:
     oauth2:
       client:
         registration:
-          github:
-            clientId: github-client-id
-            clientSecret: github-client-secret
           google:
-            clientId: 5014057553-8gm9um6vnli3cle5rgigcdjpdrid14m9.apps.googleusercontent.com
-            clientSecret: tWZKVLxaD_ARWsriiiUFYoIk
+            clientId: ${google_client_Id}
+            clientSecret: ${google_client_secret}
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               - email
               - profile
+          facebook:
+              clientId: ${facebook_client_Id}
+              clientSecret: ${facebook_client_secret}
+              redirectUri: "{baseUrl}/oauth2/callback/{registrationId}" # Note that facebook now mandates the use of https redirect URIs, so make sure your app supports https in production
+              scope:
+                - email
+                - public_profile
 
 logging:
  level:
@@ -42,4 +49,18 @@ logging:
 
 server:
  port: ${PORT:5000}
+ 
+app:
+  auth:
+    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+    tokenExpirationMsec: 864000000
+  oauth2:
+    # After successfully authenticating with the OAuth2 Provider,
+    # we'll be generating an auth token for the user and sending the token to the
+    # redirectUri mentioned by the frontend client in the /oauth2/authorize request.
+    # We're not using cookies because they won't work well in mobile clients.
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth2/redirect
+      - myandroidapp://oauth2/redirect
+      - myiosapp://oauth2/redirect
  

@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.hibernate.validator.constraints.Currency;
+
+import com.fasterxml.jackson.annotation.JsonMerge;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Docteur implements Serializable {
@@ -33,24 +37,13 @@ public class Docteur implements Serializable {
 	@Column(name = "codePostal")
 	private String codePostal;
 	
-	@ManyToOne(cascade = {CascadeType.PERSIST})
+	@ManyToOne(cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
 	private Profession profession;
+	
 	@Column(name = "nomProfessionel")
 	private String nomProfessionel;
 	
 	
-	
-	public Docteur(String civilite, String telephone, String addresse,
-			String codePostal, String nomProfessionel) {
-		this.civilite = civilite;
-		this.telephone = telephone;
-		this.addresse = addresse;
-		this.codePostal = codePostal;
-		this.nomProfessionel = nomProfessionel;
-	}
-	
-	
-
 	public Docteur() {	}
 
 
@@ -107,6 +100,10 @@ public class Docteur implements Serializable {
 
 	public Profession getProfession() {
 		return profession;
+	}
+	
+	public String getProfessionName() {
+		return profession.getProfession();
 	}
 
 	public void setProfession(Profession profession) {
