@@ -2,20 +2,20 @@ package org.naim.doctoo.payload;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 
 public class AppointmentRequest {
-	@NotBlank
-	private Long docteurID;
-	@NotBlank
+	@NotNull
+	private Long docteurId;
+	@NotNull
 	private Date date;
 	
-	public Long getDocteurID() {
-		return docteurID;
+	public Long getDocteurId() {
+		return docteurId;
 	}
-	public void setDocteurID(Long docteurID) {
-		this.docteurID = docteurID;
+	public void setDocteurId(Long docteurId) {
+		this.docteurId = docteurId;
 	}
 	public Date getDate() {
 		return date;

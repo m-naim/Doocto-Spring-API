@@ -1,11 +1,17 @@
 package org.naim.doctoo.controller;
 
+import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
+import org.apache.logging.log4j.Logger;
 import org.naim.doctoo.exception.ResourceNotFoundException;
 import org.naim.doctoo.model.Appointment;
 import org.naim.doctoo.model.Docteur;
 import org.naim.doctoo.model.User;
+import org.naim.doctoo.payload.ApiResponse;
 import org.naim.doctoo.payload.AppointmentRequest;
 import org.naim.doctoo.repository.AppointmentRepository;
 import org.naim.doctoo.repository.DocteurRepository;
@@ -13,11 +19,13 @@ import org.naim.doctoo.repository.UserRepository;
 import org.naim.doctoo.security.CurrentUser;
 import org.naim.doctoo.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 public class AppointmentController {
@@ -32,26 +40,30 @@ public class AppointmentController {
 	private DocteurRepository docteurRepository;
 
 	
-	 @GetMapping("/Appointments")
+	 @GetMapping("/appointments")
 	    @PreAuthorize("hasRole('USER')")
-	    public Appointment getUserAppointments(@CurrentUser UserPrincipal userPrincipal) {
-	        return appointmentRepository.findByUserID(userPrincipal.getId())
-	                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+	    public List<Appointment> getUserAppointments(@CurrentUser UserPrincipal userPrincipal) {
+	        return appointmentRepository.findByUserId(userPrincipal.getId())
+	                .orElseThrow(() -> new ResourceNotFoundException("Appointments of User", "id", userPrincipal.getId()));
 	    }
 	 
-	 @PostMapping("/Appointments")
+	 @PostMapping("/appointments")
 	    @PreAuthorize("hasRole('USER')")
-	    public void setUserAppointments(@CurrentUser UserPrincipal userPrincipal, @Valid @RequestBody AppointmentRequest appointmentRequest) {
-	         User user = userRepository.findById(userPrincipal.getId())
+	    public ResponseEntity<ApiResponse> setUserAppointments(@CurrentUser UserPrincipal userPrincipal, @Valid @RequestBody AppointmentRequest appointmentRequest) {
+	       
+		 User user = userRepository.findById(userPrincipal.getId())
 	                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-	         Docteur docteur= docteurRepository.findById(appointmentRequest.getDocteurID())
-	        		 .orElseThrow(() -> new ResourceNotFoundException("Docteur", "id", appointmentRequest.getDocteurID()));
+	         Docteur docteur= docteurRepository.findById(appointmentRequest.getDocteurId())
+	        		 .orElseThrow(() -> new ResourceNotFoundException("Docteur", "id", appointmentRequest.getDocteurId()));
 	         
-	         Appointment appointment=new Appointment();
-	         appointment.setDate(appointmentRequest.getDate());
-	         appointment.setUser(user);
-	         appointment.setDocteur(docteur);
-	         
-	         appointmentRepository.save(appointment);
+	         Appointment appointment=new Appointment(docteur,appointmentRequest.getDate(),user);
+
+	         Appointment result = appointmentRepository.save(appointment);
+	         URI location = ServletUriComponentsBuilder
+	                 .fromCurrentContextPath().path("/appointments")
+	                 .buildAndExpand(result.getId()).toUri();
+
+	         return ResponseEntity.created(location)
+	                 .body(new ApiResponse(true, "Appointment created successfully@"));
 	    }
 }
