@@ -7,11 +7,13 @@ import org.springframework.data.rest.core.config.Projection;
 
 @Projection(name = "inlineProfession",types = Docteur.class)
 public interface inlineProfession {
-	Long getId();
+		
+	
+	 Long getId();
 	
 	 String getCivilite();
 	
-	 Commune getCommune();
+	 String getNameCommune();
 			
 	 String getTelephone();
 	

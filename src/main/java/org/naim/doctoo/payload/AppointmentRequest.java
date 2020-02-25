@@ -4,11 +4,14 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 public class AppointmentRequest {
 	@NotNull
 	private Long docteurId;
 	@NotNull
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date date;
 	
 	public Long getDocteurId() {

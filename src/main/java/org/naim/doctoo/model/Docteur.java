@@ -109,6 +109,11 @@ public class Docteur implements Serializable {
 	public void setProfession(Profession profession) {
 		this.profession = profession;
 	}
+	
+	public String getNameCommune() {
+		return this.commune.getName();
+	}
+
 
 
 
@@ -120,6 +125,18 @@ public class Docteur implements Serializable {
 
 	public void setCoordonnees(Coordonnees coordonnees) {
 		this.coordonnees = coordonnees;
+	}
+
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	

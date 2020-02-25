@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(uniqueConstraints={@UniqueConstraint(columnNames = {"docteur_id", "date"})})
 public class Appointment {
@@ -20,7 +22,8 @@ public class Appointment {
 	
 	@ManyToOne
 	private Docteur docteur;
-
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	private Date date;
 	
 	@ManyToOne
