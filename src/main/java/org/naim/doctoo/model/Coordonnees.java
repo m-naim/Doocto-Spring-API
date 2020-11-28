@@ -5,6 +5,9 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 import javax.persistence.Id;
 
+import lombok.Data;
+
+@Data
 @Embeddable
 public class Coordonnees implements Serializable {
 	private String lon;
@@ -14,23 +17,8 @@ public class Coordonnees implements Serializable {
 		this.lon = lon;
 		this.lat = lat;
 	}
-	
-	
+
 	public Coordonnees() {
-	}
-
-
-	public String getLon() {
-		return lon;
-	}
-	public void setLon(String lon) {
-		this.lon = lon;
-	}
-	public String getLat() {
-		return lat;
-	}
-	public void setLat(String lat) {
-		this.lat = lat;
 	}
 	
 }

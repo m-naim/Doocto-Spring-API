@@ -14,8 +14,11 @@ import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.Data;
+
 @Entity
 @Table(uniqueConstraints={@UniqueConstraint(columnNames = {"docteur_id", "date"})})
+@Data
 public class Appointment {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
@@ -31,52 +34,10 @@ public class Appointment {
 	
 	public Appointment() {	}
 	
-	
-
 	public Appointment(Docteur docteur, Date date, User user) {
 		this.docteur = docteur;
 		this.date = date;
 		this.user = user;
 	}
 
-
-
-	public Docteur getDocteur() {
-		return docteur;
-	}
-
-	public void setDocteur(Docteur docteur) {
-		this.docteur = docteur;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-
-
-	public long getId() {
-		return id;
-	}
-
-
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	
-	
 }

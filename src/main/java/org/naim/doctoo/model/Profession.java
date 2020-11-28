@@ -6,37 +6,14 @@ import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import lombok.Data;
+
 @Entity
+@Data
 public class Profession implements Serializable {
+	
 	@Id
 	private String codeProfession;
-	
 	private String profession;
-	
-	
-
-	public Profession() {	}
-
-	public Profession(String codeProfession, String profession) {
-		this.codeProfession = codeProfession;
-		this.profession = profession;
-	}
-
-	public String getCodeProfession() {
-		return codeProfession;
-	}
-
-	public void setCodeProfession(String codeProfession) {
-		this.codeProfession = codeProfession;
-	}
-
-	public String getProfession() {
-		return profession;
-	}
-
-	public void setProfession(String profession) {
-		this.profession = profession;
-	}
-	
 	
 }

@@ -1,4 +1,8 @@
 package org.naim.doctoo.payload;
+
+import lombok.Data;
+
+@Data
 public class ApiResponse {
     private boolean success;
     private String message;
@@ -12,17 +16,4 @@ public class ApiResponse {
 		return success;
 	}
 
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-    
 }

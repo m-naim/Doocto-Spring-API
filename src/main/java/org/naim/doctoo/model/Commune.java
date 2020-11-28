@@ -12,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import lombok.Data;
+
+@Data
 @Entity
 public class Commune implements Serializable {
 	@Column(length=45,nullable=false)
@@ -21,37 +24,6 @@ public class Commune implements Serializable {
 	private String codeInsee;
 	
 	@ManyToOne(cascade = {CascadeType.PERSIST})
-	private Departement departement;
-	
-	
-	
-	public Commune() {}
-	
-	public Commune(String name, String codeInsee) {
-		this.name = name;
-		this.codeInsee = codeInsee;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-
-	
-	public Departement getDepartement() {
-		return departement;
-	}
-	public void setDepartement(Departement departement) {
-		this.departement = departement;
-	}
-	@Override
-	public String toString() {
-		return "Commune [name=" + name + ", codeInsee=" + codeInsee +"]";
-	}
-
-	
-	
+	private Departement departement;	
 	
 }

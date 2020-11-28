@@ -10,14 +10,18 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
+import lombok.Data;
 
+@Entity
+@Data
 public class User implements Serializable{
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,84 +46,8 @@ public class User implements Serializable{
     private AuthProvider provider;
 
     private String providerId;
+    
+    @OneToOne
+    Docteur docteur;
 
-  
-    public User() {}
-
-
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-
-	public String getEmail() {
-		return email;
-	}
-
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-
-
-	public Boolean getEmailVerified() {
-		return emailVerified;
-	}
-
-
-	public void setEmailVerified(Boolean emailVerified) {
-		this.emailVerified = emailVerified;
-	}
-
-
-	public String getPassword() {
-		return password;
-	}
-
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-
-	public AuthProvider getProvider() {
-		return provider;
-	}
-
-
-	public void setProvider(AuthProvider provider) {
-		this.provider = provider;
-	}
-
-
-	public String getProviderId() {
-		return providerId;
-	}
-
-
-	public void setProviderId(String providerId) {
-		this.providerId = providerId;
-	}
-
-
-	public Long getId() {
-		return id;
-	}
-
-  	
 }
