@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: jdbc:mysql://${RDS_HOSTNAME:localhost}:${RDS_PORT:3306}/${RDS_DB_NAME:spring}?serverTimezone=UTC&useSSL=false
-    username: ${RDS_USERNAME:spring}
-    password: ${RDS_PASSWORD:user}
+    url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3306/spring}?serverTimezone=UTC&useSSL=false
+    username: ${USERNAME:spring}
+    password: ${PASSWORD:user}
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
-    driverClassName: com.mysql.cj.jdbc.Driver
+    driverClassName: ${DRIVER_ClASS_NAME:com.mysql.cj.jdbc.Driver}
     
   jpa:
     hibernate:
@@ -17,7 +17,7 @@ spring:
     
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: ${JPA_HiBERNATE_DIALECT:org.hibernate.dialect.MySQL5Dialect}
       format-sql: true	
     show-sql: true
 
