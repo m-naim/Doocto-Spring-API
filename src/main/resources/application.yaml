@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3306/spring}?serverTimezone=UTC&useSSL=false
-    username: ${USERNAME:spring}
-    password: ${PASSWORD:user}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${USERNAME}
+    password: ${PASSWORD}
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
-    driverClassName: ${DRIVER_ClASS_NAME:com.mysql.cj.jdbc.Driver}
+    driverClassName: ${DRIVER_ClASS_NAME:org.postgresql.Driver}
     
   jpa:
     hibernate:
