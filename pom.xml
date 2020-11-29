@@ -63,13 +63,11 @@
 		<dependency>
 		  <groupId>org.postgresql</groupId>
 		  <artifactId>postgresql</artifactId>
-		  <version>9.3-1100-jdbc41</version>
 		</dependency>
 						
 		<dependency>
 	        <groupId>org.projectlombok</groupId>
 	        <artifactId>lombok</artifactId>
-	        <version>1.18.10</version>
 	        <scope>provided</scope>
 	    </dependency>
 	</dependencies>
