@@ -17,6 +17,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 public interface DocteurRepository extends JpaRepository<Docteur, Long>  {
 	
 	Docteur findById(@Param("id") long id);
+	
 	@RestResource(path = "names")
 	List<Docteur> findByNomProfessionelContaining(@Param("name") String name) ;
 	@RestResource(path = "professions")

@@ -100,11 +100,11 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         
         Docteur docteur= new Docteur();
+        docteur.setNomProfessionel(signUpDoctorRequest.getName());
         docteur.setAddresse(signUpDoctorRequest.getAdresse());
         docteur.setCivilite(signUpDoctorRequest.getCivilite());
         docteur.setCodePostal(signUpDoctorRequest.getCodePostal());
         docteur.setCommune(signUpDoctorRequest.getCommune());
-        docteur.setNomProfessionel(signUpDoctorRequest.getName());
         docteur.setProfession(signUpDoctorRequest.getProfession());
         docteur.setTelephone(signUpDoctorRequest.getTelephone());
         docteur.setCoordonnees(signUpDoctorRequest.getCoordonnees());

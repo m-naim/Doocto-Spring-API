@@ -13,20 +13,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import org.hibernate.validator.constraints.Currency;
-
-import com.fasterxml.jackson.annotation.JsonMerge;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
 
 @Entity
 @Data
 public class Docteur implements Serializable {
-	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String civilite;
-	@OneToOne(cascade = {CascadeType.PERSIST})
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	private Commune commune;
 	private String telephone;
 	@Embedded
@@ -34,7 +30,7 @@ public class Docteur implements Serializable {
 	private String addresse;
 	@Column(name = "codePostal")
 	private String codePostal;
-	@ManyToOne(cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
+	@ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
 	private Profession profession;
 	@Column(name = "nomProfessionel")
 	private String nomProfessionel;

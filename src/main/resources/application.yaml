@@ -6,21 +6,22 @@ spring:
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
-    
+    driverClassName: org.postgresql.Driver 
     
   jpa:
     hibernate:
       ddl-auto: update
+
       naming:
           implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
           physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
-        dialect: ${JPA_HiBERNATE_DIALECT:org.hibernate.dialect.MySQL5Dialect}
+        dialect: ${JPA_HiBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
         temp.use_jdbc_metadata_defaults: false
       format-sql: true	
-    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
 
   profiles:
     active: production

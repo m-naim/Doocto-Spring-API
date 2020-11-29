@@ -1,7 +1,5 @@
 package org.naim.doctoo.model;
 
-public enum  AuthProvider {
-    local,
-    facebook,
-    google,
+public enum AuthProvider {
+	local, facebook, google,
 }

@@ -13,7 +13,7 @@ public interface inlineProfession {
 	
 	 String getCivilite();
 	
-	 String getNameCommune();
+//	 String getNameCommune();
 			
 	 String getTelephone();
 	
@@ -23,7 +23,7 @@ public interface inlineProfession {
 
 	 String getCodePostal();
 	
-	 String getProfessionName();
+//	 String getProfessionName();
 	
 	 String getNomProfessionel();
 	
