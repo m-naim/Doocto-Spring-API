@@ -4,10 +4,12 @@ import java.util.Optional;
 
 import org.naim.doctoo.exception.ResourceNotFoundException;
 import org.naim.doctoo.model.Docteur;
+import org.naim.doctoo.model.Profession;
 import org.naim.doctoo.model.User;
 import org.naim.doctoo.payload.ApiResponse;
 import org.naim.doctoo.payload.SignUpDoctorRequest;
 import org.naim.doctoo.repository.DocteurRepository;
+import org.naim.doctoo.repository.ProfessionRepository;
 import org.naim.doctoo.repository.UserRepository;
 import org.naim.doctoo.security.CurrentUser;
 import org.naim.doctoo.security.UserPrincipal;
@@ -24,6 +26,8 @@ public class DoctorController {
 	private DocteurRepository docteurRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	ProfessionRepository professionRepository;
 	
 	@GetMapping("/doc/me")
     @PreAuthorize("hasRole('USER')")
@@ -45,7 +49,17 @@ public class DoctorController {
         docteur.setCodePostal(signUpDoctorRequest.getCodePostal());
         docteur.setCommune(signUpDoctorRequest.getCommune());
         docteur.setNomProfessionel(signUpDoctorRequest.getName());
-        docteur.setProfession(signUpDoctorRequest.getProfession());
+        
+        Optional<Profession> profession = professionRepository.findByProfession(signUpDoctorRequest.getProfession());
+        if(profession.isPresent())
+        	docteur.setProfession(profession.get());
+        else{
+        	Profession newProfession= new Profession();
+        	newProfession.setProfession(signUpDoctorRequest.getProfession());
+        	newProfession=professionRepository.save(newProfession);
+        	docteur.setProfession(newProfession);
+        }
+
         docteur.setTelephone(signUpDoctorRequest.getTelephone());
         docteur.setCoordonnees(signUpDoctorRequest.getCoordonnees());
         docteur= docteurRepository.save(docteur); 

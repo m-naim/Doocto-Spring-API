@@ -21,7 +21,7 @@ public class SignUpDoctorRequest {
     private String password;
     private String adresse;
     private String civilite;
-    private Profession profession;
+    private String profession;
     private Commune commune;
     private String codePostal;
     private String telephone;

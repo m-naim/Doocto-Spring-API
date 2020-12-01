@@ -12,5 +12,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 @RepositoryRestResource(collectionResourceRel = "professions", path = "professions")
 public interface ProfessionRepository extends JpaRepository<Profession, Long>{
 	@RestResource(path = "names")
-	List<Profession> findByProfessionContaining(@Param("name") String name) ;
+	List<Profession> findByProfessionContaining(@Param("name") String name);
+	
+	Optional<Profession> findByProfession(String name) ;
 }

@@ -1,11 +1,14 @@
 package org.naim.doctoo.controller;
 import java.net.URI;
+import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.naim.doctoo.exception.BadRequestException;
 import org.naim.doctoo.model.AuthProvider;
 import org.naim.doctoo.model.Docteur;
+import org.naim.doctoo.model.Profession;
 import org.naim.doctoo.model.User;
 import org.naim.doctoo.payload.ApiResponse;
 import org.naim.doctoo.payload.AuthResponse;
@@ -13,6 +16,7 @@ import org.naim.doctoo.payload.LoginRequest;
 import org.naim.doctoo.payload.SignUpRequest;
 import org.naim.doctoo.payload.SignUpDoctorRequest;
 import org.naim.doctoo.repository.DocteurRepository;
+import org.naim.doctoo.repository.ProfessionRepository;
 import org.naim.doctoo.repository.UserRepository;
 import org.naim.doctoo.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +47,8 @@ public class AuthController {
     private TokenProvider tokenProvider;
     @Autowired
 	private DocteurRepository docteurRepository;
+    @Autowired
+    ProfessionRepository professionRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -105,7 +111,16 @@ public class AuthController {
         docteur.setCivilite(signUpDoctorRequest.getCivilite());
         docteur.setCodePostal(signUpDoctorRequest.getCodePostal());
         docteur.setCommune(signUpDoctorRequest.getCommune());
-        docteur.setProfession(signUpDoctorRequest.getProfession());
+        
+        Optional<Profession> profession = professionRepository.findByProfession(signUpDoctorRequest.getProfession());
+        if(profession.isPresent())
+        	docteur.setProfession(profession.get());
+        else{
+        	Profession newProfession= new Profession();
+        	newProfession.setProfession(signUpDoctorRequest.getProfession());
+        	newProfession=professionRepository.save(newProfession);
+        	docteur.setProfession(newProfession);
+        }
         docteur.setTelephone(signUpDoctorRequest.getTelephone());
         docteur.setCoordonnees(signUpDoctorRequest.getCoordonnees());
         docteur= docteurRepository.save(docteur); 
