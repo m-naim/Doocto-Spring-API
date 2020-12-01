@@ -48,9 +48,8 @@ public class AppointmentController {
 
 	@GetMapping("/appointments")
 	@PreAuthorize("hasRole('USER')")
-	public List<Appointment> getUserAppointments(@CurrentUser UserPrincipal userPrincipal) {
-		return appointmentRepository.findByUserId(userPrincipal.getId())
-				.orElseThrow(() -> new ResourceNotFoundException("Appointments of User", "id", userPrincipal.getId()));
+	public Optional<List<Appointment>> getUserAppointments(@CurrentUser UserPrincipal userPrincipal) {
+		return appointmentRepository.findByUserId(userPrincipal.getId());
 	}
 
 	@PostMapping("/appointments")
