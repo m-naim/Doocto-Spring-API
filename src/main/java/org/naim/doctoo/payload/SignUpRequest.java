@@ -2,10 +2,12 @@ package org.naim.doctoo.payload;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import org.naim.doctoo.mapper.UserInterface;
+
 import lombok.Data;
 
 @Data
-public class SignUpRequest {
+public class SignUpRequest implements UserInterface {
     @NotBlank
     private String name;
 

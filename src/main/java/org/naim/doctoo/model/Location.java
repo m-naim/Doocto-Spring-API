@@ -1,28 +1,27 @@
 package org.naim.doctoo.model;
 
 import java.io.Serializable;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
 
-@Entity
 @Data
-@Table(name = "profession")
-public class Profession implements Serializable {
+@Entity
+@Table(name = "location")
+public class Location implements Serializable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long codeProfession;
+	private long id;
+	
 	@Column(unique = true)
-	private String profession;
+	private String daira;
+	private String wilaya;
+
 
 }

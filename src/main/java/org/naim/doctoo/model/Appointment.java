@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "docteur_id", "date" }) })
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "doctor_id", "date" }) })
 @Data
 public class Appointment {
 	@Id
@@ -23,7 +23,7 @@ public class Appointment {
 	private long id;
 
 	@ManyToOne
-	private Docteur docteur;
+	private Doctor doctor;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	private Date date;
@@ -34,8 +34,8 @@ public class Appointment {
 	public Appointment() {
 	}
 
-	public Appointment(Docteur docteur, Date date, User user) {
-		this.docteur = docteur;
+	public Appointment(Doctor doctor, Date date, User user) {
+		this.doctor = doctor;
 		this.date = date;
 		this.user = user;
 	}

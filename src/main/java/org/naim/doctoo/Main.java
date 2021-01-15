@@ -16,17 +16,26 @@
 
 package org.naim.doctoo;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.naim.doctoo.config.AppProperties;
+import org.naim.doctoo.model.Profession;
+import org.naim.doctoo.service.DataLoaderService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
 @EnableConfigurationProperties(AppProperties.class)
 public class Main {
 
+	
   public static void main(String[] args) throws Exception {
     SpringApplication.run(Main.class, args);
   }
+  
+
 }

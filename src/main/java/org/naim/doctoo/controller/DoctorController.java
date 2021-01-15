@@ -3,7 +3,7 @@ package org.naim.doctoo.controller;
 import java.util.Optional;
 
 import org.naim.doctoo.exception.ResourceNotFoundException;
-import org.naim.doctoo.model.Docteur;
+import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.model.Profession;
 import org.naim.doctoo.model.User;
 import org.naim.doctoo.payload.ApiResponse;
@@ -31,9 +31,9 @@ public class DoctorController {
 	
 	@GetMapping("/doc/me")
     @PreAuthorize("hasRole('USER')")
-	public Docteur getdocInfos(@CurrentUser UserPrincipal userPrincipal) {
+	public Doctor getdocInfos(@CurrentUser UserPrincipal userPrincipal) {
 		Optional<User> user= userRepository.findById(userPrincipal.getId());
-		return docteurRepository.findById(user.get().getDocteur().getId())
+		return docteurRepository.findById(user.get().getDoctor().getId())
 				.orElseThrow(() -> new ResourceNotFoundException("Appointments of User", "id", userPrincipal.getId()));
 	}
 	
@@ -42,27 +42,26 @@ public class DoctorController {
 	public ApiResponse editDocInfos(@RequestBody SignUpDoctorRequest signUpDoctorRequest) {
 		Optional<User> user = userRepository.findByEmail(signUpDoctorRequest.getEmail());
 		if(!user.isPresent()) throw new ResourceNotFoundException("doctor", "email", signUpDoctorRequest.getEmail());
-		
-		Docteur docteur = user.get().getDocteur();
-        docteur.setAddresse(signUpDoctorRequest.getAdresse());
-        docteur.setCivilite(signUpDoctorRequest.getCivilite());
-        docteur.setCodePostal(signUpDoctorRequest.getCodePostal());
-        docteur.setCommune(signUpDoctorRequest.getCommune());
-        docteur.setNomProfessionel(signUpDoctorRequest.getName());
+		System.out.println(signUpDoctorRequest);
+		Doctor doctor = user.get().getDoctor();
+        doctor.setAddresse(signUpDoctorRequest.getAdresse());
+        doctor.setCivilite(signUpDoctorRequest.getCivilite());
+        doctor.setLocation(signUpDoctorRequest.getLocation());
+        doctor.setNomProfessionel(signUpDoctorRequest.getName());
         
         Optional<Profession> profession = professionRepository.findByProfession(signUpDoctorRequest.getProfession());
         if(profession.isPresent())
-        	docteur.setProfession(profession.get());
+        	doctor.setProfession(profession.get());
         else{
         	Profession newProfession= new Profession();
         	newProfession.setProfession(signUpDoctorRequest.getProfession());
         	newProfession=professionRepository.save(newProfession);
-        	docteur.setProfession(newProfession);
+        	doctor.setProfession(newProfession);
         }
 
-        docteur.setTelephone(signUpDoctorRequest.getTelephone());
-        docteur.setCoordonnees(signUpDoctorRequest.getCoordonnees());
-        docteur= docteurRepository.save(docteur); 
+        doctor.setTelephone(signUpDoctorRequest.getTelephone());
+        doctor.setCoordonnees(signUpDoctorRequest.getCoordonnees());
+        doctor= docteurRepository.save(doctor); 
         
         return new ApiResponse(true, "doctors infos updated with success");
 	}

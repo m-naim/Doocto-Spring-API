@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import org.apache.logging.log4j.Logger;
 import org.naim.doctoo.exception.ResourceNotFoundException;
 import org.naim.doctoo.model.Appointment;
-import org.naim.doctoo.model.Docteur;
+import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.model.User;
 import org.naim.doctoo.payload.ApiResponse;
 import org.naim.doctoo.payload.AppointmentRequest;
@@ -41,11 +41,6 @@ public class AppointmentController {
 	@Autowired
 	private DocteurRepository docteurRepository;
 
-	private Object object;
-
-	private Object object2;
-
-
 	@GetMapping("/appointments")
 	@PreAuthorize("hasRole('USER')")
 	public Optional<List<Appointment>> getUserAppointments(@CurrentUser UserPrincipal userPrincipal) {
@@ -58,10 +53,10 @@ public class AppointmentController {
 
 		User user = userRepository.findById(userPrincipal.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-		Docteur docteur= docteurRepository.findById(appointmentRequest.getDocteurId())
+		Doctor doctor= docteurRepository.findById(appointmentRequest.getDocteurId())
 				.orElseThrow(() -> new ResourceNotFoundException("Docteur", "id", appointmentRequest.getDocteurId()));
 
-		Appointment appointment=new Appointment(docteur,appointmentRequest.getDate(),user);
+		Appointment appointment=new Appointment(doctor,appointmentRequest.getDate(),user);
 
 		Appointment result = appointmentRepository.save(appointment);
 		URI location = ServletUriComponentsBuilder
@@ -76,7 +71,7 @@ public class AppointmentController {
 	@PreAuthorize("hasRole('USER')")
 	public List<Appointment> getDocAppointments(@CurrentUser UserPrincipal userPrincipal) {
 		Optional<User> doc= userRepository.findById(userPrincipal.getId());
-		return appointmentRepository.findByDocteurId(doc.get().getDocteur().getId())
+		return appointmentRepository.findByDoctorId(doc.get().getDoctor().getId())
 				.orElseThrow(() -> new ResourceNotFoundException("Appointments of User", "id", userPrincipal.getId()));
 	}
 }

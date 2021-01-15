@@ -50,7 +50,7 @@ public class User implements Serializable {
 	private String providerId;
 
 	@OneToOne(cascade = { CascadeType.ALL })
-	Docteur docteur;
+	Doctor doctor;
 
 	public User() {
 	}

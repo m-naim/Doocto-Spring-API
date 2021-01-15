@@ -5,9 +5,13 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.naim.doctoo.exception.BadRequestException;
+import org.naim.doctoo.mapper.DoctorMapper;
+import org.naim.doctoo.mapper.UserMapper;
 import org.naim.doctoo.model.AuthProvider;
-import org.naim.doctoo.model.Docteur;
+import org.naim.doctoo.model.Doctor;
+import org.naim.doctoo.model.Location;
 import org.naim.doctoo.model.Profession;
 import org.naim.doctoo.model.User;
 import org.naim.doctoo.payload.ApiResponse;
@@ -16,6 +20,7 @@ import org.naim.doctoo.payload.LoginRequest;
 import org.naim.doctoo.payload.SignUpRequest;
 import org.naim.doctoo.payload.SignUpDoctorRequest;
 import org.naim.doctoo.repository.DocteurRepository;
+import org.naim.doctoo.repository.LocationRepository;
 import org.naim.doctoo.repository.ProfessionRepository;
 import org.naim.doctoo.repository.UserRepository;
 import org.naim.doctoo.security.TokenProvider;
@@ -49,6 +54,8 @@ public class AuthController {
 	private DocteurRepository docteurRepository;
     @Autowired
     ProfessionRepository professionRepository;
+    @Autowired
+	private LocationRepository locationRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -73,14 +80,8 @@ public class AuthController {
         }
 
         // Creating user's account
-        User user = new User();
-        user.setName(signUpRequest.getName());
-        user.setEmail(signUpRequest.getEmail());
-        user.setPassword(signUpRequest.getPassword());
-        user.setProvider(AuthProvider.local);
-
+        User user = UserMapper.mapObject(signUpRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         User result = userRepository.save(user);
 
         URI location = ServletUriComponentsBuilder
@@ -98,34 +99,32 @@ public class AuthController {
         }
 
         // Creating user's account
-        User user = new User();
-        user.setName(signUpDoctorRequest.getName());
-        user.setEmail(signUpDoctorRequest.getEmail());
-        user.setPassword(signUpDoctorRequest.getPassword());
-        user.setProvider(AuthProvider.local);
+        User user = UserMapper.mapObject(signUpDoctorRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         
-        Docteur docteur= new Docteur();
-        docteur.setNomProfessionel(signUpDoctorRequest.getName());
-        docteur.setAddresse(signUpDoctorRequest.getAdresse());
-        docteur.setCivilite(signUpDoctorRequest.getCivilite());
-        docteur.setCodePostal(signUpDoctorRequest.getCodePostal());
-        docteur.setCommune(signUpDoctorRequest.getCommune());
+        Doctor doctor= DoctorMapper.mapObject(signUpDoctorRequest);
+        
+        String daira = signUpDoctorRequest.getLocation().getDaira();
+		Optional<Location> optionalLocation = locationRepository.findByDaira(daira);
+        
+        if (!optionalLocation.isPresent()) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        doctor.setLocation(optionalLocation.get());
+
         
         Optional<Profession> profession = professionRepository.findByProfession(signUpDoctorRequest.getProfession());
         if(profession.isPresent())
-        	docteur.setProfession(profession.get());
+        	doctor.setProfession(profession.get());
         else{
         	Profession newProfession= new Profession();
         	newProfession.setProfession(signUpDoctorRequest.getProfession());
         	newProfession=professionRepository.save(newProfession);
-        	docteur.setProfession(newProfession);
+        	doctor.setProfession(newProfession);
         }
-        docteur.setTelephone(signUpDoctorRequest.getTelephone());
-        docteur.setCoordonnees(signUpDoctorRequest.getCoordonnees());
-        docteur= docteurRepository.save(docteur); 
         
-        user.setDocteur(docteur);
+        doctor= docteurRepository.save(doctor); 
+        user.setDoctor(doctor);
         User result = userRepository.save(user);
 
         URI location = ServletUriComponentsBuilder

@@ -9,12 +9,12 @@ import lombok.Data;
 @Data
 @Embeddable
 public class Coordonnees implements Serializable {
-	private String lon;
-	private String lat;
+	private double lon;
+	private double lat;
 
-	public Coordonnees(String lon, String lat) {
-		this.lon = lon;
-		this.lat = lat;
+	public Coordonnees(double d, double e) {
+		this.lon = d;
+		this.lat = e;
 	}
 
 	public Coordonnees() {

@@ -3,14 +3,16 @@ package org.naim.doctoo.payload;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import org.naim.doctoo.model.Commune;
+import org.naim.doctoo.model.Location;
+import org.naim.doctoo.mapper.DoctorInterface;
+import org.naim.doctoo.mapper.UserInterface;
 import org.naim.doctoo.model.Coordonnees;
 import org.naim.doctoo.model.Profession;
 
 import lombok.Data;
 
 @Data
-public class SignUpDoctorRequest {
+public class SignUpDoctorRequest implements UserInterface, DoctorInterface {
     @NotBlank
     private String name;
 
@@ -22,8 +24,7 @@ public class SignUpDoctorRequest {
     private String adresse;
     private String civilite;
     private String profession;
-    private Commune commune;
-    private String codePostal;
+    private Location location;
     private String telephone;
     private Coordonnees coordonnees;
 	

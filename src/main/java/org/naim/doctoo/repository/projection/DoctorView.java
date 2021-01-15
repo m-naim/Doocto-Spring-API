@@ -1,29 +1,27 @@
 package org.naim.doctoo.repository.projection;
 
-import org.naim.doctoo.model.Commune;
+import org.naim.doctoo.model.Location;
 import org.naim.doctoo.model.Coordonnees;
-import org.naim.doctoo.model.Docteur;
+import org.naim.doctoo.model.Doctor;
 import org.springframework.data.rest.core.config.Projection;
 
-@Projection(name = "inlineProfession",types = Docteur.class)
-public interface inlineProfession {
+@Projection(name = "DoctorView",types = Doctor.class)
+public interface DoctorView {
 		
 	
 	 Long getId();
 	
 	 String getCivilite();
 	
-//	 String getNameCommune();
+	 LocationView getLocation();
 			
 	 String getTelephone();
 	
 	 Coordonnees getCoordonnees();
 	
 	 String getAddresse();
-
-	 String getCodePostal();
 	
-//	 String getProfessionName();
+	 ProfessionView getProfession();
 	
 	 String getNomProfessionel();
 	
