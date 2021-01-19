@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.repository.projection.DoctorView;
+import org.naim.doctoo.repository.projection.ScheduleView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,6 +31,9 @@ public interface DocteurRepository extends JpaRepository<Doctor, Long>  {
 			@Param("location") String location,
 			Pageable pageable
 			) ;
+	
+
+	Optional<ScheduleView> findScheduleById(@Param("id") long id);
 	
 	//	List<Docteur> findDoteurssByLocationAndProfessionProfessionContaining(@Param("name") String name,@Param("lat") double lat, @Param("lon") double lon, @Param("distance") double distance, Pageable pageable);
 	//static final String DISTANCE = "(6371 * acos(cos(radians(:lat)) * cos(radians(m.coordonnees.lat)) * cos(radians(m.coordonnees.lon) - radians(:lon)) + sin(radians(:lat)) * sin(radians(m.coordonnees.lat))))";

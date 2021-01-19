@@ -94,6 +94,7 @@ public class DataLoaderService {
 			d.setProfession(professionMap.get("Ophtalmologue"));
 			d.setLocation(locationMap.get("Sidi-Aïch"));
 			d.setCoordonnees(new Coordonnees(4.679926712000816,36.622540534118365));
+			d.setSchedule("0,0,9,11,14,18");
 			doctors.add(d);
 			
 			d = new Doctor();
@@ -134,7 +135,6 @@ public class DataLoaderService {
 			for (Doctor doc : doctors) {				
 				try {
 					Doctor result = doctorRepository.save(doc);
-					System.out.println(result);					
 				}
 				catch (Exception e) {
 					System.out.println(e);

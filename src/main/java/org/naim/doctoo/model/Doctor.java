@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 @Entity
@@ -28,6 +30,7 @@ public class Doctor implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "location_id", nullable = false)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Location location;
 	
 	private String telephone;
@@ -38,8 +41,12 @@ public class Doctor implements Serializable {
 	private String codePostal;
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "profession_id", nullable = false)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Profession profession;
 	
 	@Column(name = "nomProfessionel")
 	private String nomProfessionel;
+	
+	@Column(name = "schedule")
+	private String schedule;
 }

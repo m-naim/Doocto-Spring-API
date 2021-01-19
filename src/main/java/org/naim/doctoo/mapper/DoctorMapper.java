@@ -15,4 +15,13 @@ public class DoctorMapper {
         doctor.setCoordonnees(object.getCoordonnees());
 		return doctor;
 	}
+	
+	public static void updateDoctorFromRequest(Doctor doc,DoctorInterface req) {
+		doc.setNomProfessionel(req.getName());
+		doc.setAddresse(req.getAdresse());
+		doc.setCivilite(req.getCivilite());
+		doc.setTelephone(req.getTelephone());
+		doc.setCoordonnees(req.getCoordonnees());
+		
+	}
 }
