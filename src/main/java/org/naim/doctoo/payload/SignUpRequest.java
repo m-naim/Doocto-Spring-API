@@ -12,7 +12,7 @@ public class SignUpRequest implements UserInterface {
     private String name;
 
     @NotBlank
-    @Email
+    @Email(message = "Email is not valid")
     private String email;
 
     @NotBlank

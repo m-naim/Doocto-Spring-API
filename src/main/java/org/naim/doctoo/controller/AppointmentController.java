@@ -1,13 +1,18 @@
 package org.naim.doctoo.controller;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.Logger;
 import org.naim.doctoo.exception.ResourceNotFoundException;
+import org.naim.doctoo.mapper.AppointementMapper;
 import org.naim.doctoo.model.Appointment;
 import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.model.User;
@@ -73,5 +78,13 @@ public class AppointmentController {
 		Optional<User> doc= userRepository.findById(userPrincipal.getId());
 		return appointmentRepository.findByDoctorId(doc.get().getDoctor().getId())
 				.orElseThrow(() -> new ResourceNotFoundException("Appointments of User", "id", userPrincipal.getId()));
+	}
+
+	@GetMapping("/booked")
+	public List<Date> getDocBookedDates(@RequestParam Long docId){
+		Optional<List<Appointment>> appointments= appointmentRepository.findByDoctorId(docId);
+		if(!appointments.isPresent()) return Collections.emptyList();
+		return appointments.get().stream().map(AppointementMapper::mapToDate).collect(Collectors.toList());
+
 	}
 }

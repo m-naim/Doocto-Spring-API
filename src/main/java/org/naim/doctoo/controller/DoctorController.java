@@ -6,6 +6,7 @@ import org.naim.doctoo.exception.ResourceNotFoundException;
 import org.naim.doctoo.mapper.DoctorMapper;
 import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.model.Profession;
+import org.naim.doctoo.model.Schedule;
 import org.naim.doctoo.model.User;
 import org.naim.doctoo.payload.ApiResponse;
 import org.naim.doctoo.payload.SignUpDoctorRequest;
@@ -16,6 +17,7 @@ import org.naim.doctoo.repository.projection.ScheduleView;
 import org.naim.doctoo.security.CurrentUser;
 import org.naim.doctoo.security.UserPrincipal;
 import org.naim.doctoo.service.DoctorService;
+import org.naim.doctoo.util.ScheduleSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -64,11 +66,11 @@ public class DoctorController {
 	
 	@PutMapping("/doc/schedule")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> setSchedule(@CurrentUser UserPrincipal userPrincipal,@RequestParam String value) throws NotFoundException {
+	public ResponseEntity<?> setSchedule(@CurrentUser UserPrincipal userPrincipal,@RequestBody Schedule value) throws NotFoundException {
 		Optional<User> user= userRepository.findById(userPrincipal.getId());
 		Optional<Doctor> doctorOptional=docteurRepository.findById(user.get().getDoctor().getId());
 		Doctor doctor= doctorOptional.orElseThrow(()-> new NotFoundException("doc not found"));
-		doctor.setSchedule(value);
+		doctor.setSchedule(ScheduleSerializer.serialize(value));
 		docteurRepository.save(doctor);
 		
 		return ResponseEntity.ok().body(new ApiResponse(true, "Doctor schedule updated successfully@"));
@@ -82,8 +84,10 @@ public class DoctorController {
 		Doctor doctor= doctorOptional.orElseThrow(()-> new NotFoundException("doc not found"));
 	
 		Optional<ScheduleView> schedule=docteurRepository.findScheduleById(user.get().getDoctor().getId());
-		
-		return ResponseEntity.status(200).body(schedule);
+		System.out.println(schedule.get().getSchedule());
+		Schedule response = ScheduleSerializer.deSerialize(schedule.get().getSchedule());
+		System.out.println(response);
+		return ResponseEntity.status(200).body(response);
 	}
 	
 }

@@ -7,22 +7,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.naim.doctoo.model.AuthProvider;
 import org.naim.doctoo.model.Coordonnees;
 import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.model.Location;
 import org.naim.doctoo.model.Profession;
+import org.naim.doctoo.model.User;
 import org.naim.doctoo.repository.ProfessionRepository;
+import org.naim.doctoo.repository.UserRepository;
 import org.naim.doctoo.repository.DocteurRepository;
 import org.naim.doctoo.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class DataLoaderService {
+	
+	 @Autowired
+	    private PasswordEncoder passwordEncoder;
 
 	private static List<String> professions = Arrays.asList(
 			"Oncologue", "Psychiatre", "Ophtalmologue", "Radiologue",
@@ -53,6 +60,8 @@ public class DataLoaderService {
 	private LocationRepository locationRepository;
 	@Autowired
 	private DocteurRepository doctorRepository;
+	@Autowired
+	private UserRepository userRepository;
 
 	public  void populateProfessions() {
 			professionMap= new HashMap<>();
@@ -87,6 +96,11 @@ public class DataLoaderService {
 	
 	public  void populateDoctors() {
 		
+			User user= new User();
+			user.setName("Hocini Nabil");
+			user.setEmail("Hocini@gmail.com");
+			user.setPassword(passwordEncoder.encode("hhhh"));
+			user.setProvider(AuthProvider.local);
 			doctors= new HashSet<Doctor>();
 		
 			Doctor d = new Doctor();
@@ -94,7 +108,8 @@ public class DataLoaderService {
 			d.setProfession(professionMap.get("Ophtalmologue"));
 			d.setLocation(locationMap.get("Sidi-Aïch"));
 			d.setCoordonnees(new Coordonnees(4.679926712000816,36.622540534118365));
-			d.setSchedule("0,0,9,11,14,18");
+			d.setSchedule("9:00,12:00,13:00,18:00,0,0,0,0,0,0,0,0,0,0,0,0,9:00,12:00,13:00,18:00,0,0,0,0,0,0,0,0");
+			user.setDoctor(d);
 			doctors.add(d);
 			
 			d = new Doctor();
@@ -132,6 +147,11 @@ public class DataLoaderService {
 			doctors.add(d);
 			
 			
+			try {
+				userRepository.save(user);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 			for (Doctor doc : doctors) {				
 				try {
 					Doctor result = doctorRepository.save(doc);
@@ -140,6 +160,7 @@ public class DataLoaderService {
 					System.out.println(e);
 				}
 			}
+			
 		}
 	
 	}
