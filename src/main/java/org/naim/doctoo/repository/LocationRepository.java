@@ -18,4 +18,5 @@ public interface LocationRepository extends JpaRepository<Location, Long>  {
 	
 	
 	Optional<Location> findByDaira(String daira);
+
 }
