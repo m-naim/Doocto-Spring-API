@@ -64,5 +64,5 @@ app:
     authorizedRedirectUris:
       - http://localhost:4200/oauth2/redirect
       - myandroidapp://oauth2/redirect
-      - myiosapp://oauth2/redirect
+      - myiosapp://oauth2/redirectc
  

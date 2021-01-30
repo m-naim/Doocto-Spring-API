@@ -23,10 +23,11 @@ public interface DocteurRepository extends JpaRepository<Doctor, Long>  {
 	@RestResource(path = "names")
 	List<Doctor> findByNomProfessionelContaining(@Param("name") String name) ;
 	@RestResource(path = "professions")
-	List<Doctor> findByProfessionProfessionContaining(@Param("name") String name) ;
+	Page<Doctor> findByProfessionProfessionContaining(@Param("name") String name,
+			Pageable pageable) ;
 	
 	@RestResource(path = "professionsAndLocations")
-	List<Doctor> findByProfessionProfessionContainingIgnoreCaseAndLocationDairaContainingIgnoreCase(
+	Page<Doctor> findByProfessionProfessionContainingIgnoreCaseAndLocationDairaContainingIgnoreCase(
 			@Param("profession") String profession,
 			@Param("location") String location,
 			Pageable pageable
