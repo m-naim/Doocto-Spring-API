@@ -43,4 +43,7 @@ public interface DocteurRepository extends JpaRepository<Doctor, Long>  {
 	@RestResource(path = "Locations")
 	public List<Doctor> findDoteursByLocation(@Param("lat") final double lat, @Param("lon") final double lon, @Param("distance") final double distance, Pageable pageable);
 
+	@RestResource(path = "wilaya")
+	List <Doctor> findByLocationWilayaIgnoreCase(@Param("name") String name);
+	
 }

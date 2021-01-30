@@ -32,10 +32,7 @@ public class DataLoaderService {
 	    private PasswordEncoder passwordEncoder;
 
 	private static List<String> professions = Arrays.asList(
-			"Oncologue", "Psychiatre", "Ophtalmologue", "Radiologue",
-			"Urologue", "Gynecologue", "Pneumologue", "Cardiologue", 
-			"Dermatologue", "Generaliste",
-			"Chirurgien-dentiste"
+			"Médecin généraliste"
 	);
 	
 	private static List<String> dairas = Arrays.asList(
@@ -105,7 +102,7 @@ public class DataLoaderService {
 		
 			Doctor d = new Doctor();
 			d.setNomProfessionel("Hocini Nabil");
-			d.setProfession(professionMap.get("Ophtalmologue"));
+			d.setProfession(professionMap.get("Médecin généraliste"));
 			d.setLocation(locationMap.get("Sidi-Aïch"));
 			d.setCoordonnees(new Coordonnees(4.679926712000816,36.622540534118365));
 			d.setSchedule("9:00,12:00,13:00,18:00,0,0,0,0,0,0,0,0,0,0,0,0,9:00,12:00,13:00,18:00,0,0,0,0,0,0,0,0");
@@ -114,7 +111,7 @@ public class DataLoaderService {
 			
 			d = new Doctor();
 			d.setNomProfessionel("Alitouche");
-			d.setProfession(professionMap.get("Ophtalmologue"));
+			d.setProfession(professionMap.get("Médecin généraliste"));
 			d.setLocation(locationMap.get("Akbou"));
 			d.setCoordonnees(new Coordonnees(4.54079641572381,36.477554757758746));
 			d.setTelephone("+21334356793");
@@ -122,7 +119,7 @@ public class DataLoaderService {
 			
 			d = new Doctor();
 			d.setNomProfessionel("A.KACI");
-			d.setProfession(professionMap.get("Generaliste"));
+			d.setProfession(professionMap.get("Médecin généraliste"));
 			d.setLocation(locationMap.get("Ouzellaguen"));
 			d.setCoordonnees(new Coordonnees(4.608086965445685,36.55630484219738));
 			d.setAddresse("Rue du Congrès");
@@ -131,7 +128,7 @@ public class DataLoaderService {
 			
 			d = new Doctor();
 			d.setNomProfessionel("BENHIMI");
-			d.setProfession(professionMap.get("Generaliste"));
+			d.setProfession(professionMap.get("Médecin généraliste"));
 			d.setLocation(locationMap.get("Tazmalt"));
 			d.setCoordonnees(new Coordonnees(4.391520104939628,36.404035676422716));
 			doctors.add(d);
@@ -139,7 +136,7 @@ public class DataLoaderService {
 			
 			d = new Doctor();
 			d.setNomProfessionel("Nadir SLIMANI");
-			d.setProfession(professionMap.get("Generaliste"));
+			d.setProfession(professionMap.get("Médecin généraliste"));
 			d.setLocation(locationMap.get("Bejaia"));
 			d.setCoordonnees(new Coordonnees(4.608086965445685,36.55630484219738));
 			d.setAddresse("Cité Abane Ramdane, 1000 Logements, Ihaddadène Batiment D3, N° 453 Béjaia، 06000, Algérie");

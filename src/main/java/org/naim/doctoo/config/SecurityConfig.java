@@ -113,7 +113,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
                       .permitAll()
                   .antMatchers("/auth/**", "/oauth2/**")
                       .permitAll()
-                  .antMatchers(HttpMethod.GET,"/doctors/**","/professions/**","/location/**","/doc/**", "/booked")
+                  .antMatchers(HttpMethod.GET,"/doctors/**","/professions/**","/location/**","/doc/**", "/booked","/communes/**","/wilayas/**","/doctorss/**")
                   	  .permitAll()
                   .antMatchers("/doc/**")
               	  .hasRole("USER")

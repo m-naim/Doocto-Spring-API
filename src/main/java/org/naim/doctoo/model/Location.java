@@ -20,6 +20,7 @@ public class Location implements Serializable {
 	private long id;
 	
 	@Column(unique = true)
+	private String commune;
 	private String daira;
 	private String wilaya;
 
