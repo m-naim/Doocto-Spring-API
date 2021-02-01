@@ -10,13 +10,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.springframework.lang.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "doctor_id", "date" }) })
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,13 +39,9 @@ public class Appointment {
 	@ManyToOne
 	private User user;
 
-	public Appointment() {
-	}
+	@Nullable
+	private String motif;
+	
 
-	public Appointment(Doctor doctor, Date date, User user) {
-		this.doctor = doctor;
-		this.date = date;
-		this.user = user;
-	}
 
 }

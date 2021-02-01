@@ -6,5 +6,5 @@ import lombok.Data;
 
 @Data
 public class Schedule {
-	private Set<Day> days;
+	private String value;
 }

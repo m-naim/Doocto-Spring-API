@@ -66,11 +66,12 @@ public class DoctorController {
 	
 	@PutMapping("/doc/schedule")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> setSchedule(@CurrentUser UserPrincipal userPrincipal,@RequestBody Schedule value) throws NotFoundException {
+	public ResponseEntity<?> setSchedule(@CurrentUser UserPrincipal userPrincipal,@RequestBody Schedule schedule) throws NotFoundException {
 		Optional<User> user= userRepository.findById(userPrincipal.getId());
 		Optional<Doctor> doctorOptional=docteurRepository.findById(user.get().getDoctor().getId());
 		Doctor doctor= doctorOptional.orElseThrow(()-> new NotFoundException("doc not found"));
-		doctor.setSchedule(ScheduleSerializer.serialize(value));
+		System.out.println(schedule);
+		doctor.setSchedule(schedule.getValue());
 		docteurRepository.save(doctor);
 		
 		return ResponseEntity.ok().body(new ApiResponse(true, "Doctor schedule updated successfully@"));
@@ -82,12 +83,8 @@ public class DoctorController {
 		Optional<User> user= userRepository.findById(userPrincipal.getId());
 		Optional<Doctor> doctorOptional=docteurRepository.findById(user.get().getDoctor().getId());
 		Doctor doctor= doctorOptional.orElseThrow(()-> new NotFoundException("doc not found"));
-	
 		Optional<ScheduleView> schedule=docteurRepository.findScheduleById(user.get().getDoctor().getId());
-		System.out.println(schedule.get().getSchedule());
-		Schedule response = ScheduleSerializer.deSerialize(schedule.get().getSchedule());
-		System.out.println(response);
-		return ResponseEntity.status(200).body(response);
+		return ResponseEntity.status(200).body(schedule);
 	}
 	
 }

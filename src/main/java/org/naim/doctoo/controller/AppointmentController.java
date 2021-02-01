@@ -54,36 +54,37 @@ public class AppointmentController {
 
 	@PostMapping("/appointments")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<ApiResponse> setUserAppointments(@CurrentUser UserPrincipal userPrincipal, @Valid @RequestBody AppointmentRequest appointmentRequest) {
+	public ResponseEntity<ApiResponse> setUserAppointments(@CurrentUser UserPrincipal userPrincipal,
+			@Valid @RequestBody AppointmentRequest appointmentRequest) {
 
 		User user = userRepository.findById(userPrincipal.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-		Doctor doctor= docteurRepository.findById(appointmentRequest.getDocteurId())
+		Doctor doctor = docteurRepository.findById(appointmentRequest.getDocteurId())
 				.orElseThrow(() -> new ResourceNotFoundException("Docteur", "id", appointmentRequest.getDocteurId()));
 
-		Appointment appointment=new Appointment(doctor,appointmentRequest.getDate(),user);
+		Appointment appointment = Appointment.builder().doctor(doctor).motif(appointmentRequest.getMotif()).user(user)
+				.date(appointmentRequest.getDate()).build();
 
 		Appointment result = appointmentRepository.save(appointment);
-		URI location = ServletUriComponentsBuilder
-				.fromCurrentContextPath().path("/appointments")
+		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/appointments")
 				.buildAndExpand(result.getId()).toUri();
 
-		return ResponseEntity.created(location)
-				.body(new ApiResponse(true, "Appointment created successfully@"));
+		return ResponseEntity.created(location).body(new ApiResponse(true, "Appointment created successfully@"));
 	}
 
 	@GetMapping("/doc")
 	@PreAuthorize("hasRole('USER')")
 	public List<Appointment> getDocAppointments(@CurrentUser UserPrincipal userPrincipal) {
-		Optional<User> doc= userRepository.findById(userPrincipal.getId());
+		Optional<User> doc = userRepository.findById(userPrincipal.getId());
 		return appointmentRepository.findByDoctorId(doc.get().getDoctor().getId())
 				.orElseThrow(() -> new ResourceNotFoundException("Appointments of User", "id", userPrincipal.getId()));
 	}
 
 	@GetMapping("/booked")
-	public List<Date> getDocBookedDates(@RequestParam Long docId){
-		Optional<List<Appointment>> appointments= appointmentRepository.findByDoctorId(docId);
-		if(!appointments.isPresent()) return Collections.emptyList();
+	public List<Date> getDocBookedDates(@RequestParam Long docId) {
+		Optional<List<Appointment>> appointments = appointmentRepository.findByDoctorId(docId);
+		if (!appointments.isPresent())
+			return Collections.emptyList();
 		return appointments.get().stream().map(AppointementMapper::mapToDate).collect(Collectors.toList());
 
 	}
