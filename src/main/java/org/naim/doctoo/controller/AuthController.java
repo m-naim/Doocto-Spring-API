@@ -11,6 +11,7 @@ import org.naim.doctoo.mapper.DoctorMapper;
 import org.naim.doctoo.mapper.UserMapper;
 import org.naim.doctoo.model.AuthProvider;
 import org.naim.doctoo.model.Doctor;
+import org.naim.doctoo.model.DoctorInscription;
 import org.naim.doctoo.model.Location;
 import org.naim.doctoo.model.Profession;
 import org.naim.doctoo.model.User;
@@ -19,6 +20,7 @@ import org.naim.doctoo.payload.AuthResponse;
 import org.naim.doctoo.payload.LoginRequest;
 import org.naim.doctoo.payload.SignUpRequest;
 import org.naim.doctoo.payload.SignUpDoctorRequest;
+import org.naim.doctoo.repository.DocteurInscriptionRepository;
 import org.naim.doctoo.repository.DocteurRepository;
 import org.naim.doctoo.repository.LocationRepository;
 import org.naim.doctoo.repository.ProfessionRepository;
@@ -27,6 +29,7 @@ import org.naim.doctoo.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -52,6 +55,8 @@ public class AuthController {
     private TokenProvider tokenProvider;
     @Autowired
 	private DocteurRepository docteurRepository;
+    @Autowired
+    private DocteurInscriptionRepository docteurInscriptionRepository;
     @Autowired
     ProfessionRepository professionRepository;
     @Autowired
@@ -134,4 +139,28 @@ public class AuthController {
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "User registered successfully@"));
     }
+    
+    /************************************************************************/
+    @PostMapping("/signup/doctorsInscription")
+    public ResponseEntity<?> registerDocteurInscription(@Valid @RequestBody SignUpDoctorRequest signUpDoctorRequest) {
+        if(userRepository.existsByEmail(signUpDoctorRequest.getEmail())) {
+            throw new BadRequestException("Email address already in use.");
+        }
+        
+        DoctorInscription doc = DoctorMapper.mapObjectInscription(signUpDoctorRequest);
+        
+        String daira = signUpDoctorRequest.getLocation().getDaira();
+		Optional<Location> optionalLocation = locationRepository.findByDaira(daira);
+        
+        if (!optionalLocation.isPresent()) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        doc.setLocation(optionalLocation.get());
+        docteurInscriptionRepository.save(doc); 
+        
+
+		return ((BodyBuilder) ResponseEntity.ok()).body(new ApiResponse(true, "DoctorInscription registered successfully@"));
+    }
+    /**************************************************************************************/
+    
 }

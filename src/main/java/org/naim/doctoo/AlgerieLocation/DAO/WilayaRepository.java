@@ -14,7 +14,7 @@ public interface WilayaRepository extends CrudRepository<Wilaya, Integer>{
 
 	
 	
-	@Query(value = "SELECT DISTINCT(w.wilaya) FROM Location w")
+	@Query(value = "SELECT DISTINCT(w.wilaya) FROM Location w ORDER BY w.wilaya")
 	public List<String> getAllWilaya();
 	
 	

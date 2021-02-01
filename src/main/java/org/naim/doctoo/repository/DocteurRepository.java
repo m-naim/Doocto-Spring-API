@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.naim.doctoo.model.Doctor;
+import org.naim.doctoo.model.DoctorInscription;
 import org.naim.doctoo.repository.projection.DoctorView;
 import org.naim.doctoo.repository.projection.ScheduleView;
 import org.springframework.data.domain.Page;
@@ -46,5 +47,7 @@ public interface DocteurRepository extends JpaRepository<Doctor, Long>  {
 
 	@RestResource(path = "wilaya")
 	Page<Doctor> findByLocationWilayaIgnoreCase(@Param("name") String name,Pageable pageable);
+
+	DoctorInscription save(DoctorInscription doctorInscription);
 	
 }

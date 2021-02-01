@@ -56,7 +56,7 @@ public class User implements Serializable {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Doctor doctor;
 
-	public User() {
-	}
+
+
 
 }

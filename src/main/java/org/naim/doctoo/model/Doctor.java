@@ -28,6 +28,8 @@ public class Doctor implements Serializable {
 	private Long id;
 	private String civilite;
 	
+	
+	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "location_id", nullable = false)
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -49,4 +51,6 @@ public class Doctor implements Serializable {
 	
 	@Column(name = "schedule")
 	private String schedule;
+	
+	
 }
