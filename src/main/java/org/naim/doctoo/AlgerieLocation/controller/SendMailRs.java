@@ -25,7 +25,7 @@ public class SendMailRs {
 	EmailService es;
 	@RequestMapping(value = "/sendemail/{emailDoctor}/{emailPatient}")
 	public String sendEmail(@PathVariable("emailDoctor") String emailDoctor,@PathVariable("emailPatient") String emailPatient) throws MessagingException {
-		  es.sendmail(emailPatient, emailDoctor);
+		  //es.sendmail(emailPatient, emailDoctor);
 	      return "Email sent successfully";
 	}   
 	

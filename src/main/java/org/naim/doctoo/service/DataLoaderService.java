@@ -94,14 +94,14 @@ public class DataLoaderService {
 	public  void populateDoctors() {
 		
 			User user= new User();
-			user.setName("Hocini Nabil");
-			user.setEmail("Hocini@gmail.com");
+			user.setName("Youcef BELAIDI");
+			user.setEmail("belaidi-youcef@hotmail.com");
 			user.setPassword(passwordEncoder.encode("hhhh"));
 			user.setProvider(AuthProvider.local);
 			doctors= new HashSet<Doctor>();
 		
 			Doctor d = new Doctor();
-			d.setNomProfessionel("Hocini Nabil");
+			d.setNomProfessionel("Youcef BELAIDI");
 			d.setProfession(professionMap.get("Médecin généraliste"));
 			d.setLocation(locationMap.get("Sidi-Aïch"));
 			d.setCoordonnees(new Coordonnees(4.679926712000816,36.622540534118365));
