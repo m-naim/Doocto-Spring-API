@@ -22,7 +22,11 @@ public interface DocteurRepository extends JpaRepository<Doctor, Long>  {
 	Doctor findById(@Param("id") long id);
 	
 	@RestResource(path = "names")
-	List<Doctor> findByNomProfessionelContaining(@Param("name") String name) ;
+	@Query(nativeQuery = true, value =
+	"SELECT * FROM public.doctor WHERE unaccent(nomProfessionel) iLike unaccent(CONCAT('%',:name,'%'))"
+		)
+	List<Doctor> findByNomProfessionelContaining(@Param("name") String name);
+	
 	@RestResource(path = "professions")
 	Page<Doctor> findByProfessionProfessionContaining(@Param("name") String name,
 			Pageable pageable) ;

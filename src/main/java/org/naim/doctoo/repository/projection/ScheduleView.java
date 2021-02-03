@@ -6,4 +6,5 @@ import org.springframework.data.rest.core.config.Projection;
 @Projection(name = "ScheduleView",types = Doctor.class)
 public interface ScheduleView {
 	public String getSchedule();
+	public String getShiftDuration();
 }

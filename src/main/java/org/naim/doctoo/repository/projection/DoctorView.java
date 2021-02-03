@@ -25,4 +25,5 @@ public interface DoctorView {
 	 String getNomProfessionel();
 	
 	 String getSchedule();
+	 String getShiftDuration();
 }

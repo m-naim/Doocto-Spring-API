@@ -52,5 +52,9 @@ public class Doctor implements Serializable {
 	@Column(name = "schedule")
 	private String schedule;
 	
+	@Column(name = "shiftDuration")
+	private String shiftDuration;
+	
+	
 	
 }

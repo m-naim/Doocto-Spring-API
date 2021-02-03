@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.Logger;
+import org.naim.doctoo.exception.BadRequestException;
 import org.naim.doctoo.exception.ResourceNotFoundException;
 import org.naim.doctoo.mapper.AppointementMapper;
 import org.naim.doctoo.model.Appointment;
@@ -27,7 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,6 +53,18 @@ public class AppointmentController {
 	@PreAuthorize("hasRole('USER')")
 	public Optional<List<Appointment>> getUserAppointments(@CurrentUser UserPrincipal userPrincipal) {
 		return appointmentRepository.findByUserId(userPrincipal.getId());
+	}
+	
+	@DeleteMapping("/appointments/{id}")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<ApiResponse> deletUserAppointments(@PathVariable("id") long id,@CurrentUser UserPrincipal userPrincipal) {
+		
+		Appointment appointment = appointmentRepository.findById(id)
+		        .orElseThrow(() -> new ResourceNotFoundException("appointment" ,"id",id));
+		if(appointment.getUser().getId()!= userPrincipal.getId()) 
+			throw new BadRequestException("vous ne pouvez pas annuler ce rendezvous");
+		appointmentRepository.deleteById(id);
+		return ResponseEntity.ok().body(new ApiResponse(true, "Rendez-vous annulé avec succes"));
 	}
 
 	@PostMapping("/appointments")

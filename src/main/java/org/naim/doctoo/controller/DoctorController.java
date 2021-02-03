@@ -70,8 +70,8 @@ public class DoctorController {
 		Optional<User> user= userRepository.findById(userPrincipal.getId());
 		Optional<Doctor> doctorOptional=docteurRepository.findById(user.get().getDoctor().getId());
 		Doctor doctor= doctorOptional.orElseThrow(()-> new NotFoundException("doc not found"));
-		System.out.println(schedule);
 		doctor.setSchedule(schedule.getValue());
+		doctor.setShiftDuration(schedule.getShiftDuration());
 		docteurRepository.save(doctor);
 		
 		return ResponseEntity.ok().body(new ApiResponse(true, "Doctor schedule updated successfully@"));
