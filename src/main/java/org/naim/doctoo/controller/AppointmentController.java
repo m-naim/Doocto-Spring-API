@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.Logger;
@@ -24,6 +26,7 @@ import org.naim.doctoo.repository.DocteurRepository;
 import org.naim.doctoo.repository.UserRepository;
 import org.naim.doctoo.security.CurrentUser;
 import org.naim.doctoo.security.UserPrincipal;
+import org.naim.doctoo.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +51,9 @@ public class AppointmentController {
 
 	@Autowired
 	private DocteurRepository docteurRepository;
+	
+	@Autowired
+	private EmailService es;
 
 	@GetMapping("/appointments")
 	@PreAuthorize("hasRole('USER')")
@@ -57,20 +63,28 @@ public class AppointmentController {
 	
 	@DeleteMapping("/appointments/{id}")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<ApiResponse> deletUserAppointments(@PathVariable("id") long id,@CurrentUser UserPrincipal userPrincipal) {
+	public ResponseEntity<ApiResponse> deletUserAppointments(@PathVariable("id") long id,@CurrentUser UserPrincipal userPrincipal) throws MessagingException {
 		
 		Appointment appointment = appointmentRepository.findById(id)
 		        .orElseThrow(() -> new ResourceNotFoundException("appointment" ,"id",id));
+		
+		
+		
 		if(appointment.getUser().getId()!= userPrincipal.getId()) 
 			throw new BadRequestException("vous ne pouvez pas annuler ce rendezvous");
+		
+		es.sendmailAnnulation(id);
 		appointmentRepository.deleteById(id);
+		
+		
+		
 		return ResponseEntity.ok().body(new ApiResponse(true, "Rendez-vous annulé avec succes"));
 	}
 
 	@PostMapping("/appointments")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<ApiResponse> setUserAppointments(@CurrentUser UserPrincipal userPrincipal,
-			@Valid @RequestBody AppointmentRequest appointmentRequest) {
+			@Valid @RequestBody AppointmentRequest appointmentRequest) throws AddressException, MessagingException {
 
 		User user = userRepository.findById(userPrincipal.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
@@ -81,6 +95,7 @@ public class AppointmentController {
 				.date(appointmentRequest.getDate()).build();
 
 		Appointment result = appointmentRepository.save(appointment);
+		es.sendmailRdvConfirmation(appointment);
 		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/appointments")
 				.buildAndExpand(result.getId()).toUri();
 

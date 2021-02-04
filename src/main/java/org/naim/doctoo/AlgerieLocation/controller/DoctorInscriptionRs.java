@@ -6,6 +6,7 @@ import org.naim.doctoo.AlgerieLocation.DAO.DoctorInscriptionRepository;
 import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.model.DoctorInscription;
 import org.naim.doctoo.repository.DocteurRepository;
+import org.naim.doctoo.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +22,15 @@ public class DoctorInscriptionRs {
 	@Autowired
 	private DocteurRepository docRep;
 	
+	@Autowired
+	private EmailService es;
 	
 	@GetMapping(value = "/doctorsInscriptionManager")
 	public ResponseEntity<List<DoctorInscription>> getAll() {
 
 		List<DoctorInscription> doctors = (List<DoctorInscription>)doctorsInscriptionRep.getAllDocsInscription();
+		
+		
 		if (doctors == null) {
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		} else {
