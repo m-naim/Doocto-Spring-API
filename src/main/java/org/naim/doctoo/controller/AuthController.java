@@ -3,6 +3,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -26,6 +28,7 @@ import org.naim.doctoo.repository.LocationRepository;
 import org.naim.doctoo.repository.ProfessionRepository;
 import org.naim.doctoo.repository.UserRepository;
 import org.naim.doctoo.security.TokenProvider;
+import org.naim.doctoo.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +64,10 @@ public class AuthController {
     ProfessionRepository professionRepository;
     @Autowired
 	private LocationRepository locationRepository;
-
+	@Autowired
+	private EmailService es;
+	
+	
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -98,7 +104,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup/doctor")
-    public ResponseEntity<?> registerDocteur(@Valid @RequestBody SignUpDoctorRequest signUpDoctorRequest) {
+    public ResponseEntity<?> registerDocteur(@Valid @RequestBody SignUpDoctorRequest signUpDoctorRequest) throws AddressException, MessagingException {
         if(userRepository.existsByEmail(signUpDoctorRequest.getEmail())) {
             throw new BadRequestException("Email address already in use.");
         }
@@ -131,6 +137,7 @@ public class AuthController {
         doctor= docteurRepository.save(doctor); 
         user.setDoctor(doctor);
         User result = userRepository.save(user);
+        es.sendmailConfirmationInscriptionDoc(user.getEmail(),doctor);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
@@ -140,9 +147,11 @@ public class AuthController {
                 .body(new ApiResponse(true, "User registered successfully@"));
     }
     
-    /************************************************************************/
+    /**
+     * @throws MessagingException 
+     * @throws AddressException **********************************************************************/
     @PostMapping("/signup/doctorsInscription")
-    public ResponseEntity<?> registerDocteurInscription(@Valid @RequestBody SignUpDoctorRequest signUpDoctorRequest) {
+    public ResponseEntity<?> registerDocteurInscription(@Valid @RequestBody SignUpDoctorRequest signUpDoctorRequest) throws AddressException, MessagingException {
         if(userRepository.existsByEmail(signUpDoctorRequest.getEmail())) {
             throw new BadRequestException("Email address already in use.");
         }
@@ -157,6 +166,7 @@ public class AuthController {
         }
         doc.setLocation(optionalLocation.get());
         docteurInscriptionRepository.save(doc); 
+        es.sendmailDemandeInscriptionDoc(doc);
         
 
 		return ((BodyBuilder) ResponseEntity.ok()).body(new ApiResponse(true, "DoctorInscription registered successfully@"));

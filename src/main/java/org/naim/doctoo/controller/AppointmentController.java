@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.Logger;
@@ -72,7 +73,7 @@ public class AppointmentController {
 		if(appointment.getUser().getId()!= userPrincipal.getId()) 
 			throw new BadRequestException("vous ne pouvez pas annuler ce rendezvous");
 		
-		es.sendmail(id,1);
+		es.sendmailAnnulation(id);
 		appointmentRepository.deleteById(id);
 		
 		
@@ -83,7 +84,7 @@ public class AppointmentController {
 	@PostMapping("/appointments")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<ApiResponse> setUserAppointments(@CurrentUser UserPrincipal userPrincipal,
-			@Valid @RequestBody AppointmentRequest appointmentRequest) {
+			@Valid @RequestBody AppointmentRequest appointmentRequest) throws AddressException, MessagingException {
 
 		User user = userRepository.findById(userPrincipal.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
@@ -94,6 +95,7 @@ public class AppointmentController {
 				.date(appointmentRequest.getDate()).build();
 
 		Appointment result = appointmentRepository.save(appointment);
+		es.sendmailRdvConfirmation(appointment);
 		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/appointments")
 				.buildAndExpand(result.getId()).toUri();
 
