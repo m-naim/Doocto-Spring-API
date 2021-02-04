@@ -43,5 +43,6 @@ public class Appointment {
 	private String motif;
 	
 	
-
+	@Nullable
+	private String userName;
 }

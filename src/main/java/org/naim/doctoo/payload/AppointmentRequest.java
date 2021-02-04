@@ -16,5 +16,6 @@ public class AppointmentRequest {
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date date;
 	private String motif;
+	private String userName;
 
 }

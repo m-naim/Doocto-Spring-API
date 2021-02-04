@@ -103,4 +103,27 @@ public class AppointmentController {
 		return appointments.get().stream().map(AppointementMapper::mapToDate).collect(Collectors.toList());
 
 	}
+	
+	@PostMapping("/doc/appointments")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<ApiResponse> setUserAppointmentsByDoc(@CurrentUser UserPrincipal userPrincipal,
+			@Valid @RequestBody AppointmentRequest appointmentRequest) {
+
+		User user = userRepository.findOneByName(appointmentRequest.getUserName());
+
+		Doctor doctor = docteurRepository.findById(appointmentRequest.getDocteurId())
+				.orElseThrow(() -> new ResourceNotFoundException("Docteur", "id", appointmentRequest.getDocteurId()));
+
+		Appointment appointment = Appointment.builder()
+				.doctor(doctor).motif(appointmentRequest.getMotif())
+				.user(user)
+				.userName(appointmentRequest.getUserName())
+				.date(appointmentRequest.getDate()).build();
+
+		Appointment result = appointmentRepository.save(appointment);
+		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/appointments")
+				.buildAndExpand(result.getId()).toUri();
+
+		return ResponseEntity.created(location).body(new ApiResponse(true, "Appointment created successfully@"));
+	}
 }
