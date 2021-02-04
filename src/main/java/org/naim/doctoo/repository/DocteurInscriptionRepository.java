@@ -14,6 +14,8 @@ public interface DocteurInscriptionRepository extends JpaRepository<DoctorInscri
 
 	
 	DoctorInscription save(DoctorInscription doctorInscription);
+
+	boolean existsByEmail(String email);
 	
 	
 

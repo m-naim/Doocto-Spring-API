@@ -152,7 +152,7 @@ public class AuthController {
      * @throws AddressException **********************************************************************/
     @PostMapping("/signup/doctorsInscription")
     public ResponseEntity<?> registerDocteurInscription(@Valid @RequestBody SignUpDoctorRequest signUpDoctorRequest) throws AddressException, MessagingException {
-        if(userRepository.existsByEmail(signUpDoctorRequest.getEmail())) {
+        if(docteurInscriptionRepository.existsByEmail(signUpDoctorRequest.getEmail())) {
             throw new BadRequestException("Email address already in use.");
         }
         
