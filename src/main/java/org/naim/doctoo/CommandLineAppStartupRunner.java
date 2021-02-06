@@ -20,8 +20,8 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     public void run(String...args) throws Exception {
     
     
- 	data.populateProfessions();
- 	data.populateLocations();
-	data.populateDoctors();
+ 	//data.populateProfessions();
+ 	//data.populateLocations();
+	//data.populateDoctors();
     }
 }

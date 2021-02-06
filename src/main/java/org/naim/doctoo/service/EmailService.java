@@ -85,7 +85,8 @@ public class EmailService {
 		   msgToDoctorInscription.setFrom(new InternetAddress("dzsante.algerie@gmail.com", true));
 		   msgToDoctorInscription.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailDoctor));
 		   msgToDoctorInscription.setSubject("Confirmation d'inscription du docteur "+nomDoc+".");
-		   msgToDoctorInscription.setContent("<p>Bonjour docteur "+nomDoc+",</p><p>Votre inscription vient d'être confirmée. Nous vous remercions de votre confiance.</p>"+footer, "text/html");
+		   msgToDoctorInscription.setContent("<p>Bonjour docteur "+nomDoc+",</p><p>Votre inscription vient d'être confirmée. Il vous suffit de confirmer de votre coté en cliqant sur le lien "
+		   		+ "qui se trouve dans l'email que vous avez recu. Merci.</p>"+footer, "text/html");
 		   Transport.send(msgToDoctorInscription);	  
 	}
 	
