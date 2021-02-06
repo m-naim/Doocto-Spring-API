@@ -95,9 +95,9 @@ public class AppointmentController {
 				.date(appointmentRequest.getDate()).build();
 
 		Appointment result = appointmentRepository.save(appointment);
-		es.sendmailRdvConfirmation(appointment);
 		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/appointments")
 				.buildAndExpand(result.getId()).toUri();
+		es.sendmailRdvConfirmation(appointment);
 
 		return ResponseEntity.created(location).body(new ApiResponse(true, "Appointment created successfully@"));
 	}

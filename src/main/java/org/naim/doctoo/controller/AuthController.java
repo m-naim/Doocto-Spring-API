@@ -1,10 +1,12 @@
 package org.naim.doctoo.controller;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -12,6 +14,7 @@ import org.naim.doctoo.exception.BadRequestException;
 import org.naim.doctoo.mapper.DoctorMapper;
 import org.naim.doctoo.mapper.UserMapper;
 import org.naim.doctoo.model.AuthProvider;
+import org.naim.doctoo.model.ConfirmationToken;
 import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.model.DoctorInscription;
 import org.naim.doctoo.model.Location;
@@ -22,6 +25,7 @@ import org.naim.doctoo.payload.AuthResponse;
 import org.naim.doctoo.payload.LoginRequest;
 import org.naim.doctoo.payload.SignUpRequest;
 import org.naim.doctoo.payload.SignUpDoctorRequest;
+import org.naim.doctoo.repository.ConfirmationTokenRepository;
 import org.naim.doctoo.repository.DocteurInscriptionRepository;
 import org.naim.doctoo.repository.DocteurRepository;
 import org.naim.doctoo.repository.LocationRepository;
@@ -38,9 +42,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -67,8 +74,11 @@ public class AuthController {
 	@Autowired
 	private EmailService es;
 	
+	@Autowired
+	private ConfirmationTokenRepository confirmationTokenRepository;
+    
 	
-    @PostMapping("/login")
+	@PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -85,16 +95,24 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) throws AddressException, MessagingException {
+        
+    	if(userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("Email address already in use.");
         }
-
+ 
         // Creating user's account
         User user = UserMapper.mapObject(signUpRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User result = userRepository.save(user);
 
+        ConfirmationToken confirmationToken = new ConfirmationToken(user);
+        confirmationTokenRepository.save(confirmationToken);
+        
+        String token = confirmationToken.getConfirmationToken();
+        
+        es.sendmailConfirmationUser(token, user);
+        
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
                 .buildAndExpand(result.getId()).toUri();
@@ -171,6 +189,25 @@ public class AuthController {
 
 		return ((BodyBuilder) ResponseEntity.ok()).body(new ApiResponse(true, "DoctorInscription registered successfully@"));
     }
-    /**************************************************************************************/
+    /**
+     * @throws IOException ************************************************************************************/
+    
+    
+    @GetMapping(value="/confirm-account")
+    public void confirmUserAccount(@RequestParam("token")String confirmationToken,HttpServletResponse response) throws IOException
+    {
+        ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+
+        if(token != null)
+        {
+            User user = userRepository.findByEmailIgnoreCase(token.getUser().getEmail());
+            
+            user.setEmailVerified(true);
+            userRepository.save(user);
+        }
+       
+
+        response.sendRedirect("http://localhost:4200"); 
+    }
     
 }

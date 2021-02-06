@@ -1,7 +1,6 @@
 package org.naim.doctoo.service;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.Properties;
 
@@ -22,9 +21,9 @@ import org.naim.doctoo.model.User;
 import org.naim.doctoo.repository.AppointmentRepository;
 import org.naim.doctoo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import antlr.collections.List;
 
 
 @Service
@@ -35,7 +34,7 @@ public class EmailService {
 	@Autowired
 	private UserRepository userRepository;
 
-
+	@Async
 	public void sendmailAnnulation(long id) throws MessagingException  {//plus tard il faut recevoir l'objet user et doctor pour prendre les info et personaliser les emails
 		  
 		   Properties props = prop();
@@ -50,7 +49,8 @@ public class EmailService {
 				Date date = appointment.getDate();
 				String emailPatient = appointment.getUser().getEmail();
 				long idDoctor = appointment.getDoctor().getId();
-				User docRp = userRepository.findById(idDoctor)
+				
+				User docRp = userRepository.findByDoctorId(idDoctor)
 				        .orElseThrow(() -> new ResourceNotFoundException("Doctor" ,"idDoctor",idDoctor));
 				
 				String emailDoctor = docRp.getEmail();
@@ -71,7 +71,7 @@ public class EmailService {
 				Transport.send(msgToDoctor);	  
 
 	}
-	
+	@Async
 	public void sendmailConfirmationInscriptionDoc(String email,Doctor doctor) throws AddressException, MessagingException{
 		
 		   Properties props = prop();
@@ -89,6 +89,7 @@ public class EmailService {
 		   Transport.send(msgToDoctorInscription);	  
 	}
 	
+	@Async
 	public void sendmailDemandeInscriptionDoc(DoctorInscription doctorInscription) throws AddressException, MessagingException{
 		
 		   Properties props = prop();
@@ -107,6 +108,7 @@ public class EmailService {
 		   Transport.send(msgToDoctorInscription);	  
 	}
 	
+	@Async
 	public void sendmailRdvConfirmation(Appointment appointment) throws AddressException, MessagingException{
 		
 		   Properties props = prop();
@@ -118,7 +120,7 @@ public class EmailService {
 			Date date = appointment.getDate();
 			String emailPatient = appointment.getUser().getEmail();
 			long idDoctor = appointment.getDoctor().getId();
-			User docRp = userRepository.findById(idDoctor)
+			User docRp = userRepository.findByDoctorId(idDoctor)
 			        .orElseThrow(() -> new ResourceNotFoundException("Doctor" ,"idDoctor",idDoctor));
 			
 			String emailDoctor = docRp.getEmail();
@@ -139,7 +141,26 @@ public class EmailService {
 			Transport.send(msgToDoctor);	  	  
 	}
 	
-	
+	@Async
+	public void sendmailConfirmationUser(String token, User user) throws AddressException, MessagingException{
+		
+		   Properties props = prop();
+		   Session session = sessionSourceMail(props);
+		   String footer = footer();
+		   
+		   String userName = user.getName();
+		   Date date = new Date();
+		   String emailUser = user.getEmail();   
+		   String lien = "Veuillez cliquer sur le lien pour confirmer votre compte : "
+		            +"http://localhost:5000/auth/confirm-account?token="+token;
+		   
+		   Message msgToUserConfirmation = new MimeMessage(session);
+		   msgToUserConfirmation.setFrom(new InternetAddress("dzsante.algerie@gmail.com", true));
+		   msgToUserConfirmation.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailUser));
+		   msgToUserConfirmation.setSubject("Confirmation d'inscription "+userName+".");
+		   msgToUserConfirmation.setContent("<p>Bonjour "+userName+",</p> "+lien+footer, "text/html");
+		   Transport.send(msgToUserConfirmation);	  
+	}
 	
 	
 	
