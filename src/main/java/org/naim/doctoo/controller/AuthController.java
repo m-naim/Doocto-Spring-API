@@ -110,7 +110,6 @@ public class AuthController {
         confirmationTokenRepository.save(confirmationToken);
         
         String token = confirmationToken.getConfirmationToken();
-        
         es.sendmailConfirmationUser(token, user);
         
         URI location = ServletUriComponentsBuilder
@@ -156,7 +155,11 @@ public class AuthController {
         user.setDoctor(doctor);
         User result = userRepository.save(user);
         es.sendmailConfirmationInscriptionDoc(user.getEmail(),doctor);
-
+        ConfirmationToken confirmationToken = new ConfirmationToken(user);
+        confirmationTokenRepository.save(confirmationToken);
+        
+        String token = confirmationToken.getConfirmationToken();
+        es.sendmailConfirmationUser(token, user);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
                 .buildAndExpand(result.getId()).toUri();
@@ -190,11 +193,12 @@ public class AuthController {
 		return ((BodyBuilder) ResponseEntity.ok()).body(new ApiResponse(true, "DoctorInscription registered successfully@"));
     }
     /**
+     * @return 
      * @throws IOException ************************************************************************************/
     
     
     @GetMapping(value="/confirm-account")
-    public void confirmUserAccount(@RequestParam("token")String confirmationToken,HttpServletResponse response) throws IOException
+    public String confirmUserAccount(@RequestParam("token")String confirmationToken,HttpServletResponse response) throws IOException
     {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
@@ -207,7 +211,9 @@ public class AuthController {
         }
        
 
-        response.sendRedirect("http://localhost:4200"); 
+        //response.sendRedirect("http://localhost:4200"); 
+        //return "<div><h1>Vous avez bien confirmer votre mail. Merci.</h1></div>";
+        return "<div style='padding: 70px; border:1px solid #4CAF50;text-align:center;font-size: 35px;'>Vous avez bien confirmé votre inscription.</div>";
     }
     
 }
