@@ -19,9 +19,8 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     @Override
     public void run(String...args) throws Exception {
     
-    
- 	data.populateProfessions();
- 	data.populateLocations();
-	data.populateDoctors();
+// 	data.populateProfessions();
+// 	data.populateLocations();
+//	data.populateDoctors();
     }
 }

@@ -21,6 +21,7 @@ public class Location implements Serializable {
 	
 	@Column(unique = true)
 	private String commune;
+	@Column(unique = true)
 	private String daira;
 	private String wilaya;
 
