@@ -41,13 +41,14 @@ public interface DocteurRepository extends JpaRepository<Doctor, Long>  {
 
 	Optional<ScheduleView> findScheduleById(@Param("id") long id);
 	
+	//sql version
 	//	List<Docteur> findDoteurssByLocationAndProfessionProfessionContaining(@Param("name") String name,@Param("lat") double lat, @Param("lon") double lon, @Param("distance") double distance, Pageable pageable);
 	//static final String DISTANCE = "(6371 * acos(cos(radians(:lat)) * cos(radians(m.coordonnees.lat)) * cos(radians(m.coordonnees.lon) - radians(:lon)) + sin(radians(:lat)) * sin(radians(m.coordonnees.lat))))";
 	
 	static final String DISTANCE = "SQRT(POW(69.1 * (:lat -  m.coordonnees.lat), 2) + POW(69.1 * (m.coordonnees.lon - :lon) * COS(:lat / 57.3), 2))";
 	@Query("SELECT m FROM Doctor m WHERE "+DISTANCE+" < :distance ORDER BY "+DISTANCE+" ASC")
 	@RestResource(path = "Locations")
-	public List<Doctor> findDoteursByLocation(@Param("lat") final double lat, @Param("lon") final double lon, @Param("distance") final double distance, Pageable pageable);
+	public Page<Doctor> findDoteursByLocation(@Param("lat") final double lat, @Param("lon") final double lon, @Param("distance") final double distance, Pageable pageable);
 
 	@RestResource(path = "wilaya")
 	Page<Doctor> findByLocationWilayaIgnoreCase(@Param("name") String name,Pageable pageable);

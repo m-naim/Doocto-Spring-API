@@ -16,30 +16,18 @@
 
 package org.naim.doctoo;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.mail.MessagingException;
-
-import org.naim.doctoo.AlgerieLocation.controller.SendMailRs;
 import org.naim.doctoo.config.AppProperties;
-import org.naim.doctoo.model.Profession;
-import org.naim.doctoo.service.DataLoaderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication
-@EnableAsync
 @EnableConfigurationProperties(AppProperties.class)
+@EnableAsync
+@EnableScheduling
 public class Main{
 
   public static void main(String[] args) throws Exception {
