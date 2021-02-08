@@ -6,6 +6,7 @@ import org.naim.doctoo.AlgerieLocation.model.Commune;
 import org.naim.doctoo.AlgerieLocation.model.Wilaya;
 import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.model.Location;
+import org.naim.doctoo.model.Profession;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -25,4 +26,12 @@ public interface WilayaRepository extends CrudRepository<Wilaya, Integer>{
 		public List<Doctor> findDoctorByWilayaId();
 		//
 
+		 @Query(value = "select l from Location l ")
+		public List<Location> getAllLocationss();
+		 
+		 
+		 @Query(value = "select p from Profession p ORDER BY profession ASC")
+		public List<Profession> getAllProfessions();
+		 
+		 
 }
