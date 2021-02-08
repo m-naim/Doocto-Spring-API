@@ -1,5 +1,6 @@
 package org.naim.doctoo.payload;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ public class AppointmentRequest {
 	private Long docteurId;
 	@NotNull
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
-	private Date date;
+	private LocalDateTime date;
 	private String motif;
 	private String userName;
 

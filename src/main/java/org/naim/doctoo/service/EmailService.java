@@ -1,6 +1,7 @@
 package org.naim.doctoo.service;
 
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Properties;
 
@@ -46,7 +47,7 @@ public class EmailService {
 		   			
 		   		String nomDoc = appointment.getDoctor().getNomProfessionel();
 				String nomPatient = appointment.getUser().getName();
-				Date date = appointment.getDate();
+				LocalDateTime date = appointment.getDate();
 				String emailPatient = appointment.getUser().getEmail();
 				long idDoctor = appointment.getDoctor().getId();
 				
@@ -71,6 +72,7 @@ public class EmailService {
 				Transport.send(msgToDoctor);	  
 
 	}
+	
 	@Async
 	public void sendmailConfirmationInscriptionDoc(String email,Doctor doctor) throws AddressException, MessagingException{
 		
@@ -118,7 +120,7 @@ public class EmailService {
 	   			
 	   		String nomDoc = appointment.getDoctor().getNomProfessionel();
 			String nomPatient = appointment.getUser().getName();
-			Date date = appointment.getDate();
+			LocalDateTime date = appointment.getDate();
 			String emailPatient = appointment.getUser().getEmail();
 			long idDoctor = appointment.getDoctor().getId();
 			User docRp = userRepository.findByDoctorId(idDoctor)

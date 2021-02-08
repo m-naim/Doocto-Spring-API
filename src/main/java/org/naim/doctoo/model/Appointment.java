@@ -1,5 +1,7 @@
 package org.naim.doctoo.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -18,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "doctor_id", "date" }) })
@@ -25,6 +28,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,7 +38,7 @@ public class Appointment {
 	private Doctor doctor;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-	private Date date;
+	private LocalDateTime date;
 
 	@ManyToOne
 	private User user;

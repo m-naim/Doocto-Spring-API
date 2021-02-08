@@ -1,6 +1,7 @@
 package org.naim.doctoo.controller;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -111,7 +112,7 @@ public class AppointmentController {
 	}
 
 	@GetMapping("/booked")
-	public List<Date> getDocBookedDates(@RequestParam Long docId) {
+	public List<LocalDateTime> getDocBookedDates(@RequestParam Long docId) {
 		Optional<List<Appointment>> appointments = appointmentRepository.findByDoctorId(docId);
 		if (!appointments.isPresent())
 			return Collections.emptyList();
