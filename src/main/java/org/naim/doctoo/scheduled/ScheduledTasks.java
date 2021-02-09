@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
+
 @Component
 public class ScheduledTasks {
 
@@ -29,16 +31,16 @@ public class ScheduledTasks {
     @Autowired
     EmailService es;
     
-    @Scheduled(cron = "0 0 12 ? * * *" )
-    public void scheduleTaskWithFixedRate() {
+    @Scheduled(cron = "0 0 12 ? * *" )
+    public void scheduleTaskWithFixedRate() throws MessagingException {
         
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plus(1, ChronoUnit.DAYS);
         List<Appointment> appointmentBydate = appointmentRepository.findByDate(tomorrow)
         		.orElseThrow(() -> new ResourceNotFoundException("appointment" ,"s",1));
         
-        appointmentBydate.forEach(ap->System.out.println(ap.getId()));
-
+        //appointmentBydate.forEach(ap->System.out.println(ap.getId()));
+        es.sendmailReminder(appointmentBydate);
 
     }
 }

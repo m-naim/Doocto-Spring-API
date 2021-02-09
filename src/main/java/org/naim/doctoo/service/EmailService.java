@@ -3,6 +3,7 @@ package org.naim.doctoo.service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -83,6 +84,44 @@ public class EmailService {
 				Transport.send(msgToDoctor);	  
 
 	}
+	
+	
+	@Async
+	public void sendmailReminder(List<Appointment> appointments){
+		  
+		   Properties props = prop();
+		   Session session = sessionSourceMail(props);
+		   String footer = footer();
+		   
+		   appointments.forEach(appointment ->{
+			   
+			   String nomDoc = appointment.getDoctor().getNomProfessionel();
+			   String nomPatient = appointment.getUser().getName();
+			   LocalDateTime date = appointment.getDate();
+			   String emailPatient = appointment.getUser().getEmail();
+					
+			   
+			  try{
+				   Message message = new MimeMessage(session);
+				   message.setFrom(new InternetAddress(email, true));
+				   message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailPatient));
+				   message.setSubject("Rappel de rendez-vous. Important!");
+				   message.setContent("<p>Bonjour "+nomPatient+",</p><p>Petit rappel de vous avez rendez-vous pour demain le "+date+" avec le docteur <b>"+nomDoc+".</b></p>"+footer, "text/html");
+				   Transport.send(message); 
+				   
+			} catch (AddressException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			   
+		   });	
+	     
+
+	}
+	
 	
 	@Async
 	public void sendmailConfirmationInscriptionDoc(String email,Doctor doctor) throws AddressException, MessagingException{
