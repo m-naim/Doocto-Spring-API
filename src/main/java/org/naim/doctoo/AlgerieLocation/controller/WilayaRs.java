@@ -4,6 +4,10 @@ import java.util.List;
 
 import org.naim.doctoo.AlgerieLocation.DAO.WilayaRepository;
 import org.naim.doctoo.model.Doctor;
+
+import org.naim.doctoo.model.Location;
+import org.naim.doctoo.model.Profession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +37,16 @@ public class WilayaRs {
 		}
 	}
 	
+	@GetMapping(value = "/locationss")
+	public ResponseEntity<List<Location>> getAllLocations() {
+
+		List<Location> locations = (List<Location>)wilayaRep.getAllLocationss();
+		if (locations == null) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<List<Location>>(locations, HttpStatus.OK);
+		}
+	}
 
 	
 	@GetMapping(value = "/doctorss")
@@ -43,6 +57,18 @@ public class WilayaRs {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		} else {
 			return new ResponseEntity<List<Doctor>>(doctors, HttpStatus.OK);
+		}
+
+	}
+	
+	@GetMapping(value = "/allProffesions")
+	public ResponseEntity<List<Profession>> getAllProffessions() {
+
+		List<Profession> professions = wilayaRep.getAllProfessions();
+		if (professions == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<List<Profession>>(professions, HttpStatus.OK);
 		}
 
 	}

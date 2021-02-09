@@ -3,6 +3,7 @@ package org.naim.doctoo.service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -22,6 +23,7 @@ import org.naim.doctoo.model.User;
 import org.naim.doctoo.repository.AppointmentRepository;
 import org.naim.doctoo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +37,16 @@ public class EmailService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Value("${HOST}")
+	private String host;
+	
+	@Value("${EMAILPASSWORD}")
+	private String emailPassword;
+	
+
+	@Value("${EMAIL}")
+	private String email;
+	
 	@Async
 	public void sendmailAnnulation(long id) throws MessagingException  {//plus tard il faut recevoir l'objet user et doctor pour prendre les info et personaliser les emails
 		  
@@ -58,20 +70,58 @@ public class EmailService {
 				
 				
 				Message msgToPatient = new MimeMessage(session);
-				msgToPatient.setFrom(new InternetAddress("dzsante.algerie@gmail.com", true));
+				msgToPatient.setFrom(new InternetAddress(email, true));
 				msgToPatient.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailPatient));
 				msgToPatient.setSubject("Annulation de rendez-vous. Important!");
 				msgToPatient.setContent("<p>Bonjour "+nomPatient+",</p><p>Votre annulation du rendez-vous du "+date+" est bien tenue en compte avec le docteur <b>"+nomDoc+".</b></p>"+footer, "text/html");
 				Transport.send(msgToPatient); 
 				   
 				Message msgToDoctor = new MimeMessage(session);
-				msgToDoctor.setFrom(new InternetAddress("dzsante.algerie@gmail.com", true));
+				msgToDoctor.setFrom(new InternetAddress(email, true));
 				msgToDoctor.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailDoctor));
 				msgToDoctor.setSubject("Annulation de rendez-vous. Important!");
 				msgToDoctor.setContent("<p>Bonjour "+nomDoc+",</p><p>Votre Patient <b>"+nomPatient+ " </b>vient d'annuler son rendez-vous prevu pour le "+date+".</p>"+footer, "text/html");
 				Transport.send(msgToDoctor);	  
 
 	}
+	
+	
+	@Async
+	public void sendmailReminder(List<Appointment> appointments){
+		  
+		   Properties props = prop();
+		   Session session = sessionSourceMail(props);
+		   String footer = footer();
+		   
+		   appointments.forEach(appointment ->{
+			   
+			   String nomDoc = appointment.getDoctor().getNomProfessionel();
+			   String nomPatient = appointment.getUser().getName();
+			   LocalDateTime date = appointment.getDate();
+			   String emailPatient = appointment.getUser().getEmail();
+					
+			   
+			  try{
+				   Message message = new MimeMessage(session);
+				   message.setFrom(new InternetAddress(email, true));
+				   message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailPatient));
+				   message.setSubject("Rappel de rendez-vous. Important!");
+				   message.setContent("<p>Bonjour "+nomPatient+",</p><p>Petit rappel de vous avez rendez-vous pour demain le "+date+" avec le docteur <b>"+nomDoc+".</b></p>"+footer, "text/html");
+				   Transport.send(message); 
+				   
+			} catch (AddressException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			   
+		   });	
+	     
+
+	}
+	
 	
 	@Async
 	public void sendmailConfirmationInscriptionDoc(String email,Doctor doctor) throws AddressException, MessagingException{
@@ -84,7 +134,7 @@ public class EmailService {
 		   String emailDoctor = email;  
 		   
 		   Message msgToDoctorInscription = new MimeMessage(session);
-		   msgToDoctorInscription.setFrom(new InternetAddress("dzsante.algerie@gmail.com", true));
+		   msgToDoctorInscription.setFrom(new InternetAddress(email, true));
 		   msgToDoctorInscription.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailDoctor));
 		   msgToDoctorInscription.setSubject("Confirmation d'inscription du docteur "+nomDoc+".");
 		   msgToDoctorInscription.setContent("<p>Bonjour docteur "+nomDoc+",</p><p>Votre inscription vient d'être confirmée. Il vous suffit de confirmer de votre coté en cliqant sur le lien "
@@ -103,7 +153,7 @@ public class EmailService {
 		   String emailDoctorInscription = doctorInscription.getEmail();   
 		   
 		   Message msgToDoctorInscription = new MimeMessage(session);
-		   msgToDoctorInscription.setFrom(new InternetAddress("dzsante.algerie@gmail.com", true));
+		   msgToDoctorInscription.setFrom(new InternetAddress(email, true));
 		   msgToDoctorInscription.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailDoctorInscription));
 		   msgToDoctorInscription.setSubject("Demande d'inscription du docteur "+nomDocInscription+".");
 		   msgToDoctorInscription.setContent("<p>Bonjour docteur "+nomDocInscription+",</p><p>Votre demande d'inscription du "+date+" est bien prise en compte. Nous reviendrons "
@@ -130,14 +180,14 @@ public class EmailService {
 			
 			
 			Message msgToPatient = new MimeMessage(session);
-			msgToPatient.setFrom(new InternetAddress("dzsante.algerie@gmail.com", true));
+			msgToPatient.setFrom(new InternetAddress(email, true));
 			msgToPatient.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailPatient));
 			msgToPatient.setSubject("Prise de rendez-vous. Important!");
 			msgToPatient.setContent("<p>Bonjour "+nomPatient+",</p><p>Votre rendez-vous du "+date+" est bien tenue en compte avec le docteur <b>"+nomDoc+".</b></p>"+footer, "text/html");
 			Transport.send(msgToPatient); 
 			   
 			Message msgToDoctor = new MimeMessage(session);
-			msgToDoctor.setFrom(new InternetAddress("dzsante.algerie@gmail.com", true));
+			msgToDoctor.setFrom(new InternetAddress(email, true));
 			msgToDoctor.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailDoctor));
 			msgToDoctor.setSubject("Prise de rendez-vous. Important!");
 			msgToDoctor.setContent("<p>Bonjour "+nomDoc+",</p><p>Le Patient <b>"+nomPatient+ " </b>vient de prendre rendez-vous pour le "+date+".</p>"+footer, "text/html");
@@ -155,10 +205,10 @@ public class EmailService {
 		   Date date = new Date();
 		   String emailUser = user.getEmail();   
 		   String lien = "Veuillez cliquer sur le lien pour confirmer votre compte : "
-		            +"http://localhost:5000/auth/confirm-account?token="+token;
+		            +host+"/auth/confirm-account?token="+token;
 		   
 		   Message msgToUserConfirmation = new MimeMessage(session);
-		   msgToUserConfirmation.setFrom(new InternetAddress("dzsante.algerie@gmail.com", true));
+		   msgToUserConfirmation.setFrom(new InternetAddress(email, true));
 		   msgToUserConfirmation.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailUser));
 		   msgToUserConfirmation.setSubject("Confirmation d'inscription "+userName+".");
 		   msgToUserConfirmation.setContent("<p>Bonjour "+userName+",</p> "+lien+footer, "text/html");
@@ -179,9 +229,9 @@ public class EmailService {
 	
 	public Session sessionSourceMail (Properties props) {
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-	      @Override
-		protected PasswordAuthentication getPasswordAuthentication() {
-	         return new PasswordAuthentication("dzsante.algerie@gmail.com","naimyoucef");
+
+	      protected PasswordAuthentication getPasswordAuthentication() {
+	         return new PasswordAuthentication(email,emailPassword);
 	      }
 	   });
 		return session;
@@ -189,7 +239,7 @@ public class EmailService {
 	
 	public String footer() {
 		   
-		   String footer = "<div><p><b>Cordialement,</b></p><b>L'Équipe Dz santé.</b><p><b>Pour nous contacter par mail : dzsante.algerie@gmail.com</b></p>\r\n<p><b>&copy;Copyright 2020 <a href=\"https://doocto.netlify.app/\">dzsante.com</a></b></p></div>";
+		   String footer = "<div><p><b>Cordialement,</b></p><b>L'Équipe Dz santé.</b><p><b>Pour nous contacter par mail :"+email+"</b></p>\r\n<p><b>&copy;Copyright 2020 <a href=\"https://doocto.netlify.app/\">dzsante.com</a></b></p></div>";
 		   return footer;
 	}
 }
