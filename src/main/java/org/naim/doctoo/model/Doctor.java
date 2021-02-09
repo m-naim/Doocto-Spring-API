@@ -55,6 +55,11 @@ public class Doctor implements Serializable {
 	@Column(name = "shiftDuration")
 	private String shiftDuration;
 	
+	@Column(name = "presentation")
+	private String presentation;
+	
+	@Column(name = "accessIndecations")
+	private String accessIndecations;
 	
 	
 }

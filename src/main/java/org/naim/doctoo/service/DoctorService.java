@@ -8,6 +8,7 @@ import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.model.Location;
 import org.naim.doctoo.model.Profession;
 import org.naim.doctoo.model.User;
+import org.naim.doctoo.payload.DoctorUpdateRequest;
 import org.naim.doctoo.payload.SignUpDoctorRequest;
 import org.naim.doctoo.repository.DocteurRepository;
 import org.naim.doctoo.repository.LocationRepository;
@@ -27,15 +28,15 @@ public class DoctorService {
 	@Autowired
 	private LocationRepository locationRepository;
 
-	public Doctor updateDoctor(SignUpDoctorRequest signUpDoctorRequest) {
-		Optional<User> user = userRepository.findByEmail(signUpDoctorRequest.getEmail());
-		if(!user.isPresent()) throw new ResourceNotFoundException("doctor", "email", signUpDoctorRequest.getEmail());
+	public Doctor updateDoctor(DoctorUpdateRequest doctorUpdateRequest) {
+		Optional<User> user = userRepository.findByEmail(doctorUpdateRequest.getEmail());
+		if(!user.isPresent()) throw new ResourceNotFoundException("doctor", "email", doctorUpdateRequest.getEmail());
 
 		Doctor doctor = user.get().getDoctor();
-        DoctorMapper.updateDoctorFromRequest(doctor, signUpDoctorRequest);
+        DoctorMapper.updateDoctorFromRequest(doctor, doctorUpdateRequest);
         
-        addProfession(doctor, signUpDoctorRequest.getProfession());
-        addLocation(signUpDoctorRequest.getLocation().getDaira(), doctor);
+        addProfession(doctor, doctorUpdateRequest.getProfession());
+        addLocation(doctorUpdateRequest.getLocation().getDaira(), doctor);
         
         doctor= docteurRepository.save(doctor); 
         return doctor;

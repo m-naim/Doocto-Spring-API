@@ -9,6 +9,7 @@ import org.naim.doctoo.model.Profession;
 import org.naim.doctoo.model.Schedule;
 import org.naim.doctoo.model.User;
 import org.naim.doctoo.payload.ApiResponse;
+import org.naim.doctoo.payload.DoctorUpdateRequest;
 import org.naim.doctoo.payload.SignUpDoctorRequest;
 import org.naim.doctoo.repository.DocteurRepository;
 import org.naim.doctoo.repository.ProfessionRepository;
@@ -51,10 +52,11 @@ public class DoctorController {
 	
 	@PostMapping("/doc/infos")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> editDocInfos(@CurrentUser UserPrincipal userPrincipal,@RequestBody SignUpDoctorRequest signUpDoctorRequest) {
+	public ResponseEntity<?> editDocInfos(@CurrentUser UserPrincipal userPrincipal,
+			@RequestBody DoctorUpdateRequest doctorUpdateRequest) {
 		System.out.println("start the update");
 		try {
-			doctorService.updateDoctor(signUpDoctorRequest);
+			doctorService.updateDoctor(doctorUpdateRequest);
 			
 		} catch (Exception e) {
 			System.out.println(e);

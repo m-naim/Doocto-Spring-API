@@ -29,7 +29,7 @@ public class ScheduledTasks {
     @Autowired
     EmailService es;
     
-    @Scheduled(cron = "0 0 12 ? * * *" )
+    @Scheduled(cron = "0 0 12 ? * *" )
     public void scheduleTaskWithFixedRate() {
         
         LocalDate today = LocalDate.now();

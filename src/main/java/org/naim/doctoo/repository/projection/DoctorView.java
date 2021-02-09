@@ -26,4 +26,7 @@ public interface DoctorView {
 	
 	 String getSchedule();
 	 String getShiftDuration();
+	 
+	 String getPresentation();
+	 String getAccessIndecations();
 }

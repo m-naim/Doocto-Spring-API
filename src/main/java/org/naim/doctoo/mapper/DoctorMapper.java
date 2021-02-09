@@ -9,6 +9,7 @@ import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.model.DoctorInscription;
 import org.naim.doctoo.model.Location;
 import org.naim.doctoo.model.User;
+import org.naim.doctoo.payload.DoctorUpdateRequest;
 import org.naim.doctoo.payload.SignUpDoctorRequest;
 
 public class DoctorMapper {
@@ -36,12 +37,14 @@ public class DoctorMapper {
         doctorInscription.setCoordonnees(object.getCoordonnees());
 		return doctorInscription;
 	}
-	public static void updateDoctorFromRequest(Doctor doc,DoctorInterface req) {
+	public static void updateDoctorFromRequest(Doctor doc,DoctorUpdateRequest req) {
 		doc.setNomProfessionel(req.getName());
 		doc.setAddresse(req.getAdresse());
 		doc.setCivilite(req.getCivilite());
 		doc.setTelephone(req.getTelephone());
 		doc.setCoordonnees(req.getCoordonnees());
+		doc.setPresentation(req.getPresentation());
+		doc.setAccessIndecations(req.getAccessIndecations());
 		
 	}
 }
