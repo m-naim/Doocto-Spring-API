@@ -179,7 +179,8 @@ public class EmailService {
 	
 	public Session sessionSourceMail (Properties props) {
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-	      protected PasswordAuthentication getPasswordAuthentication() {
+	      @Override
+		protected PasswordAuthentication getPasswordAuthentication() {
 	         return new PasswordAuthentication("dzsante.algerie@gmail.com","naimyoucef");
 	      }
 	   });

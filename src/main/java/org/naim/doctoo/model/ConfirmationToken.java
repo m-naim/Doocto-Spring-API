@@ -14,8 +14,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.lang.Nullable;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

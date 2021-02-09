@@ -1,8 +1,6 @@
 package org.naim.doctoo.payload;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;

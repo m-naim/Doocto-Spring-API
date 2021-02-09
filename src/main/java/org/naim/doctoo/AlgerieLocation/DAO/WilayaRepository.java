@@ -2,10 +2,8 @@ package org.naim.doctoo.AlgerieLocation.DAO;
 
 import java.util.List;
 
-import org.naim.doctoo.AlgerieLocation.model.Commune;
 import org.naim.doctoo.AlgerieLocation.model.Wilaya;
 import org.naim.doctoo.model.Doctor;
-import org.naim.doctoo.model.Location;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

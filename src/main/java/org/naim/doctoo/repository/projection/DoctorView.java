@@ -2,7 +2,6 @@ package org.naim.doctoo.repository.projection;
 
 import org.naim.doctoo.model.Coordonnees;
 import org.naim.doctoo.model.Doctor;
-import org.naim.doctoo.model.Schedule;
 import org.springframework.data.rest.core.config.Projection;
 
 @Projection(name = "DoctorView",types = Doctor.class)

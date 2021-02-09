@@ -3,19 +3,11 @@ package org.naim.doctoo.AlgerieLocation.controller;
 import java.util.List;
 
 import org.naim.doctoo.AlgerieLocation.DAO.WilayaRepository;
-import org.naim.doctoo.AlgerieLocation.model.Commune;
-import org.naim.doctoo.AlgerieLocation.model.Wilaya;
 import org.naim.doctoo.model.Doctor;
-import org.naim.doctoo.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -33,7 +25,7 @@ public class WilayaRs {
 	@GetMapping(value = "/wilayas")
 	public ResponseEntity<List<String>> getAllWilayas() {
 
-		List<String> wilayas = (List<String>)wilayaRep.getAllWilaya();
+		List<String> wilayas = wilayaRep.getAllWilaya();
 		if (wilayas == null) {
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		} else {

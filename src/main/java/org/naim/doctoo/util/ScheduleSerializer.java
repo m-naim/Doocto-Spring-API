@@ -1,18 +1,5 @@
 package org.naim.doctoo.util;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.StringJoiner;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import org.naim.doctoo.model.Day;
-import org.naim.doctoo.model.Days;
-import org.naim.doctoo.model.Schedule;
-
 public class ScheduleSerializer {
 	
 //	public static String serialize(Schedule schedule) {

@@ -1,18 +1,11 @@
 package org.naim.doctoo.AlgerieLocation.model;
 //avant c'etait class Departement et table departement et redevient wilaya 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.springframework.context.annotation.Lazy;
 
 @Entity
 @Table(name = "wilaya")

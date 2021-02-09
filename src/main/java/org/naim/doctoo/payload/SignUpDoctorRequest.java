@@ -7,8 +7,6 @@ import org.naim.doctoo.model.Location;
 import org.naim.doctoo.mapper.DoctorInterface;
 import org.naim.doctoo.mapper.UserInterface;
 import org.naim.doctoo.model.Coordonnees;
-import org.naim.doctoo.model.Profession;
-
 import lombok.Data;
 
 @Data

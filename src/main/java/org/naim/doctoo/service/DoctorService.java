@@ -9,7 +9,6 @@ import org.naim.doctoo.model.Location;
 import org.naim.doctoo.model.Profession;
 import org.naim.doctoo.model.User;
 import org.naim.doctoo.payload.DoctorUpdateRequest;
-import org.naim.doctoo.payload.SignUpDoctorRequest;
 import org.naim.doctoo.repository.DocteurRepository;
 import org.naim.doctoo.repository.LocationRepository;
 import org.naim.doctoo.repository.ProfessionRepository;

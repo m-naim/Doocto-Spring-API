@@ -18,10 +18,7 @@ import org.naim.doctoo.repository.UserRepository;
 import org.naim.doctoo.repository.DocteurRepository;
 import org.naim.doctoo.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 

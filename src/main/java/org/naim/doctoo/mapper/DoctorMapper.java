@@ -1,14 +1,7 @@
 package org.naim.doctoo.mapper;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
-import org.naim.doctoo.model.AuthProvider;
-import org.naim.doctoo.model.Coordonnees;
 import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.model.DoctorInscription;
-import org.naim.doctoo.model.Location;
-import org.naim.doctoo.model.User;
 import org.naim.doctoo.payload.DoctorUpdateRequest;
 import org.naim.doctoo.payload.SignUpDoctorRequest;
 

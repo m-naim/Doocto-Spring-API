@@ -1,7 +1,5 @@
 package org.naim.doctoo.model;
 
-import java.util.Set;
-
 import lombok.Data;
 
 @Data

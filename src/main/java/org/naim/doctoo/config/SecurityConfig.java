@@ -1,8 +1,6 @@
 package org.naim.doctoo.config;
 
 import java.util.Arrays;
-import java.util.List;
-
 import org.naim.doctoo.security.CustomUserDetailsService;
 import org.naim.doctoo.security.RestAuthenticationEntryPoint;
 import org.naim.doctoo.security.TokenAuthenticationFilter;

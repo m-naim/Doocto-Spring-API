@@ -3,17 +3,13 @@ package org.naim.doctoo.controller;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.validation.Valid;
 
-import org.apache.logging.log4j.Logger;
 import org.naim.doctoo.exception.BadRequestException;
 import org.naim.doctoo.exception.ResourceNotFoundException;
 import org.naim.doctoo.mapper.AppointementMapper;
@@ -29,7 +25,6 @@ import org.naim.doctoo.security.CurrentUser;
 import org.naim.doctoo.security.UserPrincipal;
 import org.naim.doctoo.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;

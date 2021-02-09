@@ -1,7 +1,6 @@
 package org.naim.doctoo.controller;
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
@@ -9,11 +8,9 @@ import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.modelmapper.ModelMapper;
 import org.naim.doctoo.exception.BadRequestException;
 import org.naim.doctoo.mapper.DoctorMapper;
 import org.naim.doctoo.mapper.UserMapper;
-import org.naim.doctoo.model.AuthProvider;
 import org.naim.doctoo.model.ConfirmationToken;
 import org.naim.doctoo.model.Doctor;
 import org.naim.doctoo.model.DoctorInscription;
@@ -34,7 +31,6 @@ import org.naim.doctoo.repository.UserRepository;
 import org.naim.doctoo.security.TokenProvider;
 import org.naim.doctoo.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,7 +42,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -190,7 +185,7 @@ public class AuthController {
         es.sendmailDemandeInscriptionDoc(doc);
         
 
-		return ((BodyBuilder) ResponseEntity.ok()).body(new ApiResponse(true, "DoctorInscription registered successfully@"));
+		return ResponseEntity.ok().body(new ApiResponse(true, "DoctorInscription registered successfully@"));
     }
     /**
      * @return 
