@@ -65,6 +65,7 @@ app:
       - http://localhost:4200/oauth2/redirect
       - https://doocto.netlify.app/oauth2/redirect
       - https://dzsante.netlify.app/oauth2/redirect
+      - https://tabibrdv.com/oauth2/redirect
       - myandroidapp://oauth2/redirect
       - myiosapp://oauth2/redirectc
       
