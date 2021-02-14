@@ -143,12 +143,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
   public CorsConfigurationSource corsConfigurationSource() {
       final CorsConfiguration configuration = new CorsConfiguration();
       configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200","https://www.tabibrdv.com/"));
-      configuration.setAllowedMethods(Arrays.asList("HEAD",
-              "GET", "POST", "PUT", "DELETE", "PATCH"));
-     
+      configuration.setAllowedMethods(Arrays.asList("HEAD","GET", "POST", "PUT", "DELETE", "PATCH"));
       configuration.setAllowCredentials(true);
 
-      configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+      configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"
+    		  ,"X-Requested-With", "Origin",  "Accept"));
       final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
       source.registerCorsConfiguration("/**", configuration);
       return source;
