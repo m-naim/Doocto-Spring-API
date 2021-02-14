@@ -19,9 +19,7 @@ public class Location implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(unique = true)
 	private String commune;
-	@Column(unique = true)
 	private String daira;
 	private String wilaya;
 
