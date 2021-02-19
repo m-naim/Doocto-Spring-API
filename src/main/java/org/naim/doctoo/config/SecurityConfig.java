@@ -111,7 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
                       .permitAll()
                   .antMatchers("/auth/**", "/oauth2/**")
                       .permitAll()
-                  .antMatchers(HttpMethod.GET,"/allProffesions/**","/locationss/**","/confirm-account**","/sendemail/**","/doctors/**","/professions/**","/location/**","/doc/**", "/booked","/communes/**","/wilayas/**","/doctorss/**","/doctorsInscriptionManager/**")
+                  .antMatchers(HttpMethod.GET,"/up","/allProffesions/**","/locationss/**","/confirm-account**","/sendemail/**","/doctors/**","/professions/**","/location/**","/doc/**", "/booked","/communes/**","/wilayas/**","/doctorss/**","/doctorsInscriptionManager/**")
                   	  .permitAll()
                   .antMatchers("/doc/**")
               	  .hasRole("USER")

@@ -5,6 +5,7 @@ import org.naim.doctoo.model.Appointment;
 import org.naim.doctoo.repository.AppointmentRepository;
 import org.naim.doctoo.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -36,6 +37,9 @@ public class ScheduledTasks {
     @Autowired
     RestTemplate restTemplate;
     
+    @Value("${HOST}")
+	private String host;
+    
     @Scheduled(cron = "0 0 12 ? * *" )
     public void scheduleTaskWithFixedRate() throws MessagingException {
     	LocalDateTime time = LocalDateTime.now();
@@ -60,9 +64,10 @@ public class ScheduledTasks {
          headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
          HttpEntity <String> entity = new HttpEntity<String>(headers);
          try {
-        	 HttpStatus response = restTemplate.exchange("http://localhost:5000/user/me", HttpMethod.GET, entity, String.class).getStatusCode();			
+        	  String response = restTemplate.exchange(host+"/up", HttpMethod.GET, entity, String.class).getBody();	
+        	  System.out.println(today+" :"+response);
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println(e);
 		}
     }
 }
