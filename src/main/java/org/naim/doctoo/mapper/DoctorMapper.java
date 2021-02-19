@@ -26,7 +26,7 @@ public class DoctorMapper {
 		doctorInscription.setCivilite(object.getCivilite());
 		doctorInscription.setLocation(object.getLocation());
         doctorInscription.setTelephone(object.getTelephone());
-        doctorInscription.setProfession(object.getPassword());
+ 
         doctorInscription.setCoordonnees(object.getCoordonnees());
 		return doctorInscription;
 	}

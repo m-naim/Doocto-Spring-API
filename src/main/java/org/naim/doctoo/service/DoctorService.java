@@ -36,6 +36,8 @@ public class DoctorService {
         
         addProfession(doctor, doctorUpdateRequest.getProfession());
         addLocation(doctorUpdateRequest.getLocation().getDaira(), doctor);
+        System.out.println(doctor);
+        System.out.println(doctorUpdateRequest);
         
         doctor= docteurRepository.save(doctor); 
         return doctor;
